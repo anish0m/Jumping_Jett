@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include <stdio.h>
 #include <SDL.h>
 #include "jumpingjett-view.h"
 using namespace  std;
