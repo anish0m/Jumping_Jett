@@ -13,8 +13,12 @@
 
 #define JETT_X      (GAP * 2 + GAME_VIEW_WIDTH)
 
-void drawBackgroundImage(SDL_Renderer* renderer, SDL_Surface *backgroundImg, SDL_Texture *texture);
+void drawBackgroundImage(SDL_Renderer* renderer);
 
-void drawJettPoster(SDL_Renderer* renderer, SDL_Surface *jettImg, SDL_Texture *texture);
+void drawJettPoster(SDL_Renderer* renderer);
+
+void createAllViews(SDL_Renderer* renderer);
+
+void destroyAllViews();
 
 #endif //JJGAME_JUMPINGJETT_VIEW_H

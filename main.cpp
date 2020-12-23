@@ -15,13 +15,9 @@ int main(int argc, char* argv[])
                                           SDL_WINDOWPOS_UNDEFINED,
                                           SCREEN_WIDTH, SCREEN_HEIGHT,
                                           SDL_WINDOW_SHOWN);
-    // Create renderer
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    SDL_Surface *backgroundImg = NULL;
-    SDL_Surface *jettImg = NULL;
-
-    SDL_Texture *texture = NULL;
+    createAllViews(renderer);
 
     bool quit = false;
     while(!quit)
@@ -37,20 +33,18 @@ int main(int argc, char* argv[])
             quit = true;
         }
 
-        // Initialize renderer color black for the background
+        // Set background color Black
         SDL_SetRenderDrawColor(renderer, 35, 43, 43, 0xFF);
-        // Clear screen
         SDL_RenderClear(renderer);
 
-        drawBackgroundImage(renderer, backgroundImg, texture);
-        drawJettPoster(renderer, jettImg, texture);
+        // Draw background image, jet image
+        drawBackgroundImage(renderer);
+        drawJettPoster(renderer);
 
         // Update screen
         SDL_RenderPresent(renderer);
     }
-    SDL_DestroyTexture(texture);
-    SDL_FreeSurface(backgroundImg);
-    SDL_FreeSurface(jettImg);
+    destroyAllViews();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
