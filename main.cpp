@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     SDL_Surface *backgroundImg = NULL;
-    // RIFA: create "jettImg" similar as above
+    SDL_Surface *jettImg = NULL;
 
     SDL_Texture *texture = NULL;
 
@@ -43,14 +43,14 @@ int main(int argc, char* argv[])
         SDL_RenderClear(renderer);
 
         drawBackgroundImage(renderer, backgroundImg, texture);
-        // RIFA: call "drawJettPoster" function in the same way as above
+        drawJettPoster(renderer, jettImg, texture);
 
         // Update screen
         SDL_RenderPresent(renderer);
     }
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(backgroundImg);
-    // RIFA: free "jettImg" as the same way as above
+    SDL_FreeSurface(jettImg);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

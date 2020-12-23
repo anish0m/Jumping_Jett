@@ -8,9 +8,8 @@ void drawBackgroundImage(SDL_Renderer* renderer, SDL_Surface *backgroundImg, SDL
     SDL_RenderCopy(renderer, texture, NULL, &backgroundImageBoundaries);
 }
 
-// RIFA: Implement "drawJettPoster" as same way as above with "Jett.bmp" image file
 void drawJettPoster(SDL_Renderer* renderer, SDL_Surface *jettImg, SDL_Texture *texture) {
-    SDL_Rect jettImageBoundaries = {JETT_X, JETT_Y, JETT_WIDTH, JETT_HEIGHT };
+    SDL_Rect jettImageBoundaries = {JETT_X, GAP, JETT_WIDTH, JETT_HEIGHT };
     jettImg = SDL_LoadBMP("../Jett.bmp");
     texture = SDL_CreateTextureFromSurface(renderer, jettImg);
     SDL_RenderCopy(renderer, texture, NULL, &jettImageBoundaries);
