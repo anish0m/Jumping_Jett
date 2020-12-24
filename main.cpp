@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include "view.h"
@@ -19,8 +20,13 @@ int main(int argc, char* argv[])
                                           SDL_WINDOW_SHOWN);
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
+    printf("SDL Window created\n");
+
     initGame();
+    printf("Game initialized successfully\n");
+
     createAllViews(renderer);
+    printf("Game views created\n");
 
     bool quit = false;
     while(!quit)
@@ -34,6 +40,23 @@ int main(int argc, char* argv[])
         if(e.type == SDL_QUIT)
         {
             quit = true;
+        }
+        else if (e.type == SDL_MOUSEBUTTONDOWN)
+        {
+            if (isStartButtonClicked(e))
+            {
+                printf("Start button has been clicked\n");
+
+                if (isGameRunning())
+                {
+                    stopGame();
+                }
+                else
+                {
+                    startGame();
+                }
+                redrawStartButton(renderer);
+            }
         }
 
         // Set background color Black

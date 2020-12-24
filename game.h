@@ -20,6 +20,14 @@ void initGame();
 
 void startGame();
 
+void stopGame();
+
+bool hasGameEnded();
+
+bool isGameRunning();
+
 bool hasGameStarted();
+
+char* getStartButtonLabel();
 
 #endif //JJGAME_GAME_H

@@ -31,6 +31,8 @@ void drawJettPoster(SDL_Renderer* renderer);
 void drawAppDescription(SDL_Renderer* renderer);
 
 void drawStartButton(SDL_Renderer* renderer);
+bool isStartButtonClicked(SDL_Event mouseDownEvent);
+void redrawStartButton(SDL_Renderer* renderer);
 
 void createAllViews(SDL_Renderer* renderer);
 
