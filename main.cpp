@@ -43,6 +43,7 @@ int main(int argc, char* argv[])
         drawBackgroundImage(renderer);
         drawJettPoster(renderer);
         drawAppDescription(renderer);
+        drawStartButton(renderer);
 
         // Update screen
         SDL_RenderPresent(renderer);

@@ -62,14 +62,41 @@ void destroyAppDescription() {
     SDL_FreeSurface(appTitleSurface);
 }
 
+/* Start Button */
+SDL_Color black = {0, 0, 0};
+SDL_Rect startButtonRect = { START_BUTTON_X, START_BUTTON_Y, START_BUTTON_WIDTH, START_BUTTON_HEIGHT };
+SDL_Rect startButtonTitleRect = { START_BUTTON_X + SMALL_GAP, START_BUTTON_Y + 5, START_BUTTON_WIDTH - SMALL_GAP - 5, START_BUTTON_HEIGHT - SMALL_GAP};
+SDL_Texture* startButtonTitleTexture;
+SDL_Surface* startButtonTitleSurface;
+
+void createStartButton(SDL_Renderer* renderer) {
+    TTF_Font* sans = TTF_OpenFont("../OpenSans-Bold.ttf", 16);
+    startButtonTitleSurface = TTF_RenderText_Solid(sans, "START", black);
+    startButtonTitleTexture = SDL_CreateTextureFromSurface(renderer, startButtonTitleSurface);
+    TTF_CloseFont(sans);
+}
+
+void drawStartButton(SDL_Renderer* renderer) {
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_RenderFillRect(renderer, &startButtonRect);
+    SDL_RenderCopy(renderer, startButtonTitleTexture, NULL, &startButtonTitleRect);
+}
+
+void destroyStartButton() {
+    SDL_DestroyTexture(startButtonTitleTexture);
+    SDL_FreeSurface(startButtonTitleSurface);
+}
+
 void createAllViews(SDL_Renderer* renderer) {
     createBackgroundImage(renderer);
     createJettPoster(renderer);
     createAppDescription(renderer);
+    createStartButton(renderer);
 }
 
 void destroyAllViews() {
     destroyBackgroundImage();
     destroyJettPoster();
     destroyAppDescription();
+    destroyStartButton();
 }
