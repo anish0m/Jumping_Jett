@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include "view.h"
+#include "game.h"
 
 /* Background image */
 SDL_Rect backgroundImageBoundaries = { GAP, GAP, GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT };
@@ -71,7 +72,7 @@ SDL_Surface* startButtonTitleSurface;
 
 void createStartButton(SDL_Renderer* renderer) {
     TTF_Font* sans = TTF_OpenFont("../OpenSans-Bold.ttf", 16);
-    startButtonTitleSurface = TTF_RenderText_Solid(sans, "START", black);
+    startButtonTitleSurface = TTF_RenderText_Solid(sans, hasGameStarted() ? "STOP!" : "START", black);
     startButtonTitleTexture = SDL_CreateTextureFromSurface(renderer, startButtonTitleSurface);
     TTF_CloseFont(sans);
 }

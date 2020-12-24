@@ -1,7 +1,7 @@
-#include <stdio.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include "view.h"
+#include "game.h"
 using namespace  std;
 
 int main(int argc, char* argv[])
@@ -19,6 +19,7 @@ int main(int argc, char* argv[])
                                           SDL_WINDOW_SHOWN);
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
+    initGame();
     createAllViews(renderer);
 
     bool quit = false;
