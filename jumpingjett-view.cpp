@@ -41,14 +41,16 @@ void destroyJettPoster() {
 }
 
 /* App title and description */
-TTF_Font* sans = TTF_OpenFont("Sans.ttf", 24);
-SDL_Color White = {255, 255, 255};
-SDL_Surface* appTitle = TTF_RenderText_Solid(sans, "Jumping Jett", White);
-SDL_Rect appTitleRect = { APP_TITLE_X, APP_TITLE_Y, GAP, GAP };
+SDL_Color white = {255, 255, 255};
+SDL_Rect appTitleRect = { APP_TITLE_X, APP_TITLE_Y, APP_TITLE_WIDTH , APP_TITLE_HEIGHT };
 SDL_Texture* appTitleTexture;
+SDL_Surface* appTitleSurface;
 
 void createAppDescription(SDL_Renderer* renderer) {
-    appTitleTexture = SDL_CreateTextureFromSurface(renderer, appTitle);
+    TTF_Font* sans = TTF_OpenFont("../OpenSans-Regular.ttf", 24);
+    appTitleSurface = TTF_RenderText_Solid(sans, "Jumping Jett", white);
+    appTitleTexture = SDL_CreateTextureFromSurface(renderer, appTitleSurface);
+    TTF_CloseFont(sans);
 }
 
 void drawAppDescription(SDL_Renderer* renderer) {
@@ -57,7 +59,7 @@ void drawAppDescription(SDL_Renderer* renderer) {
 
 void destroyAppDescription() {
     SDL_DestroyTexture(appTitleTexture);
-    SDL_FreeSurface(jettImg);
+    SDL_FreeSurface(appTitleSurface);
 }
 
 void createAllViews(SDL_Renderer* renderer) {

@@ -14,7 +14,9 @@
 #define JETT_X      (GAP * 2 + GAME_VIEW_WIDTH)
 
 #define APP_TITLE_X GAME_VIEW_WIDTH + GAP + GAP
-#define APP_TITLE_Y GAP + JETT_HEIGHT + GAP
+#define APP_TITLE_Y GAP + JETT_HEIGHT
+#define APP_TITLE_WIDTH 220
+#define APP_TITLE_HEIGHT GAP
 
 void drawBackgroundImage(SDL_Renderer* renderer);
 
