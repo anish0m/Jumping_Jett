@@ -18,6 +18,6 @@ link_directories(
         ${SDL2_TTF_LIB_DIR}
 )
 
-add_executable(JJgame main.cpp jumpingjett-view.h jumpingjett-view.cpp)
+add_executable(JJgame main.cpp view.h view.cpp)
 
 target_link_libraries(${PROJECT_NAME} SDL2main SDL2 SDL2_ttf)

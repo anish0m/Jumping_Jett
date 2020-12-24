@@ -1,5 +1,5 @@
-#ifndef JJGAME_JUMPINGJETT_VIEW_H
-#define JJGAME_JUMPINGJETT_VIEW_H
+#ifndef JJGAME_VIEW_H
+#define JJGAME_VIEW_H
 
 #define SCREEN_WIDTH    900
 #define SCREEN_HEIGHT   500
@@ -36,4 +36,4 @@ void createAllViews(SDL_Renderer* renderer);
 
 void destroyAllViews();
 
-#endif //JJGAME_JUMPINGJETT_VIEW_H
+#endif //JJGAME_VIEW_H

@@ -1,6 +1,6 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
-#include "jumpingjett-view.h"
+#include "view.h"
 
 /* Background image */
 SDL_Rect backgroundImageBoundaries = { GAP, GAP, GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT };
