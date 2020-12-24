@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include "jumpingjett-view.h"
 using namespace  std;
 
@@ -10,6 +11,7 @@ int main(int argc, char* argv[])
     (void) argv;
 
     SDL_Init(SDL_INIT_VIDEO);
+    TTF_Init();
     SDL_Window *window = SDL_CreateWindow("Jumping Jett",
                                           SDL_WINDOWPOS_UNDEFINED,
                                           SDL_WINDOWPOS_UNDEFINED,
@@ -40,6 +42,7 @@ int main(int argc, char* argv[])
         // Draw background image, jet image
         drawBackgroundImage(renderer);
         drawJettPoster(renderer);
+        drawAppDescription(renderer);
 
         // Update screen
         SDL_RenderPresent(renderer);
