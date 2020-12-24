@@ -11,7 +11,7 @@ SDL_Texture *backgroundImgTexture;
 
 void createBackgroundImage(SDL_Renderer* renderer) {
     printf("Create background image\n");
-    backgroundImg = SDL_LoadBMP("../background.bmp");
+    backgroundImg = SDL_LoadBMP("../images/background.bmp");
     backgroundImgTexture = SDL_CreateTextureFromSurface(renderer, backgroundImg);
 }
 
@@ -32,7 +32,7 @@ SDL_Texture *jettPosterTexture;
 
 void createJettPoster(SDL_Renderer* renderer) {
     printf("Creating jett poster\n");
-    jettImg = SDL_LoadBMP("../Jett.bmp");
+    jettImg = SDL_LoadBMP("../images/Jett.bmp");
     jettPosterTexture = SDL_CreateTextureFromSurface(renderer, jettImg);
 }
 
@@ -54,7 +54,7 @@ SDL_Surface* appTitleSurface;
 
 void createAppDescription(SDL_Renderer* renderer) {
     printf("Loading font and creating app description\n");
-    TTF_Font* sans = TTF_OpenFont("../OpenSans-Regular.ttf", 24);
+    TTF_Font* sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", 24);
     appTitleSurface = TTF_RenderText_Solid(sans, "Jumping Jett", white);
     appTitleTexture = SDL_CreateTextureFromSurface(renderer, appTitleSurface);
     TTF_CloseFont(sans);
@@ -79,7 +79,7 @@ SDL_Surface* startButtonTitleSurface;
 
 void createStartButton(SDL_Renderer* renderer) {
     printf("Creating start button\n");
-    TTF_Font* sans = TTF_OpenFont("../OpenSans-Bold.ttf", 16);
+    TTF_Font* sans = TTF_OpenFont("../fonts/OpenSans-Bold.ttf", 16);
     startButtonTitleSurface = TTF_RenderText_Solid(sans, getStartButtonLabel(), black);
     startButtonTitleTexture = SDL_CreateTextureFromSurface(renderer, startButtonTitleSurface);
     TTF_CloseFont(sans);
