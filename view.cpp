@@ -4,6 +4,7 @@
 #include "view.h"
 #include "game.h"
 
+/********************************************************************/
 /* Background image */
 SDL_Rect backgroundImageBoundaries = { GAP, GAP, GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT };
 SDL_Surface *backgroundImg;
@@ -25,6 +26,7 @@ void destroyBackgroundImage() {
     SDL_FreeSurface(backgroundImg);
 }
 
+/********************************************************************/
 /* Jett poster */
 SDL_Rect jettImageBoundaries = {JETT_X, GAP, JETT_WIDTH, JETT_HEIGHT };
 SDL_Surface *jettImg;
@@ -46,30 +48,59 @@ void destroyJettPoster() {
     SDL_FreeSurface(jettImg);
 }
 
+/********************************************************************/
 /* App title and description */
 SDL_Color white = {255, 255, 255};
+
 SDL_Rect appTitleRect = { APP_TITLE_X, APP_TITLE_Y, APP_TITLE_WIDTH , APP_TITLE_HEIGHT };
 SDL_Texture* appTitleTexture;
 SDL_Surface* appTitleSurface;
 
+SDL_Rect appSubtitleRect = { APP_SUBTITLE_X, APP_SUBTITLE_Y, APP_SUBTITLE_WIDTH , APP_SUBTITLE_HEIGHT };
+SDL_Texture* appSubtitleTexture;
+SDL_Surface* appSubtitleSurface;
+
+SDL_Rect name1Rect = { NAME1_X, NAME1_Y, NAME1_WIDTH , NAME1_HEIGHT };
+SDL_Texture* name1Texture;
+SDL_Surface* name1Surface;
+
 void createAppDescription(SDL_Renderer* renderer) {
     printf("Loading font and creating app description\n");
+
     TTF_Font* sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", 24);
+
     appTitleSurface = TTF_RenderText_Solid(sans, "Jumping Jett", white);
     appTitleTexture = SDL_CreateTextureFromSurface(renderer, appTitleSurface);
+
+    appSubtitleSurface = TTF_RenderText_Solid(sans, "Created by", white);
+    appSubtitleTexture = SDL_CreateTextureFromSurface(renderer, appSubtitleSurface);
+
+    name1Surface = TTF_RenderText_Solid(sans, "Mohsina Tabassum Rifa", white);
+    name1Texture = SDL_CreateTextureFromSurface(renderer, name1Surface);
+
     TTF_CloseFont(sans);
 }
 
 void drawAppDescription(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, appTitleTexture, NULL, &appTitleRect);
+    SDL_RenderCopy(renderer, appSubtitleTexture, NULL, &appSubtitleRect);
+    SDL_RenderCopy(renderer, name1Texture, NULL, &name1Rect);
 }
 
 void destroyAppDescription() {
     printf("Destroying app description\n");
+
     SDL_DestroyTexture(appTitleTexture);
     SDL_FreeSurface(appTitleSurface);
+
+    SDL_DestroyTexture(appSubtitleTexture);
+    SDL_FreeSurface(appSubtitleSurface);
+
+    SDL_DestroyTexture(name1Texture);
+    SDL_FreeSurface(name1Surface);
 }
 
+/********************************************************************/
 /* Start Button */
 SDL_Color black = {0, 0, 0};
 SDL_Rect startButtonRect = { START_BUTTON_X, START_BUTTON_Y, START_BUTTON_WIDTH, START_BUTTON_HEIGHT };
@@ -111,6 +142,7 @@ void redrawStartButton(SDL_Renderer* renderer) {
     createStartButton(renderer);
 }
 
+/********************************************************************/
 void createAllViews(SDL_Renderer* renderer) {
     createBackgroundImage(renderer);
     createJettPoster(renderer);
