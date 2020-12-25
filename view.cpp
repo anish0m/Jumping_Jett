@@ -64,6 +64,14 @@ SDL_Rect name1Rect = { NAME1_X, NAME1_Y, NAME1_WIDTH , NAME1_HEIGHT };
 SDL_Texture* name1Texture;
 SDL_Surface* name1Surface;
 
+SDL_Rect name2Rect = { NAME2_X, NAME2_Y, NAME2_WIDTH , NAME2_HEIGHT };
+SDL_Texture* name2Texture;
+SDL_Surface* name2Surface;
+
+SDL_Rect name3Rect = { NAME3_X, NAME3_Y, NAME3_WIDTH , NAME3_HEIGHT };
+SDL_Texture* name3Texture;
+SDL_Surface* name3Surface;
+
 void createAppDescription(SDL_Renderer* renderer) {
     printf("Loading font and creating app description\n");
 
@@ -77,6 +85,12 @@ void createAppDescription(SDL_Renderer* renderer) {
 
     name1Surface = TTF_RenderText_Solid(sans, "Mohsina Tabassum Rifa", white);
     name1Texture = SDL_CreateTextureFromSurface(renderer, name1Surface);
+
+    name2Surface = TTF_RenderText_Solid(sans, "Saklain Mahmud", white);
+    name2Texture = SDL_CreateTextureFromSurface(renderer, name2Surface);
+
+    name3Surface = TTF_RenderText_Solid(sans, "Zaed Bin Monir", white);
+    name3Texture = SDL_CreateTextureFromSurface(renderer, name3Surface);
 
     TTF_CloseFont(sans);
 }
