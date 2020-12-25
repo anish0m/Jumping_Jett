@@ -75,10 +75,12 @@ SDL_Surface* name3Surface;
 void createAppDescription(SDL_Renderer* renderer) {
     printf("Loading font and creating app description\n");
 
-    TTF_Font* sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", 24);
+    TTF_Font* sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", APP_TITLE_HEIGHT * 3);
 
     appTitleSurface = TTF_RenderText_Solid(sans, "Jumping Jett", white);
     appTitleTexture = SDL_CreateTextureFromSurface(renderer, appTitleSurface);
+
+    sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", APP_SUBTITLE_HEIGHT * 3);
 
     appSubtitleSurface = TTF_RenderText_Solid(sans, "Created by", white);
     appSubtitleTexture = SDL_CreateTextureFromSurface(renderer, appSubtitleSurface);
@@ -99,6 +101,8 @@ void drawAppDescription(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, appTitleTexture, NULL, &appTitleRect);
     SDL_RenderCopy(renderer, appSubtitleTexture, NULL, &appSubtitleRect);
     SDL_RenderCopy(renderer, name1Texture, NULL, &name1Rect);
+    SDL_RenderCopy(renderer, name2Texture, NULL, &name2Rect);
+    SDL_RenderCopy(renderer, name3Texture, NULL, &name3Rect);
 }
 
 void destroyAppDescription() {
@@ -124,7 +128,7 @@ SDL_Surface* startButtonTitleSurface;
 
 void createStartButton(SDL_Renderer* renderer) {
     printf("Creating start button\n");
-    TTF_Font* sans = TTF_OpenFont("../fonts/OpenSans-Bold.ttf", 16);
+    TTF_Font* sans = TTF_OpenFont("../fonts/OpenSans-Bold.ttf", 32);
     startButtonTitleSurface = TTF_RenderText_Solid(sans, getStartButtonLabel(), black);
     startButtonTitleTexture = SDL_CreateTextureFromSurface(renderer, startButtonTitleSurface);
     TTF_CloseFont(sans);
