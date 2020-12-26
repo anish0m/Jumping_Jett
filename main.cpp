@@ -49,11 +49,13 @@ int main(int argc, char* argv[])
 
                 if (isGameRunning())
                 {
+                    destroyPlayerView();
                     stopGame();
                 }
                 else
                 {
                     startGame();
+                    createPlayerView(renderer);
                 }
                 redrawStartButton(renderer);
             }
@@ -68,6 +70,13 @@ int main(int argc, char* argv[])
         drawJettPoster(renderer);
         drawAppDescription(renderer);
         drawStartButton(renderer);
+
+        // Draw game
+        if (isGameRunning())
+        {
+            Player* player = getPlayer();
+            drawPlayer(renderer, player->percentX, player->percentY);
+        }
 
         // Update screen
         SDL_RenderPresent(renderer);

@@ -174,3 +174,39 @@ void destroyAllViews() {
     destroyAppDescription();
     destroyStartButton();
 }
+
+/***********************************************/
+SDL_Surface *playerImg;
+SDL_Texture *playerTexture;
+
+void createPlayerView(SDL_Renderer* renderer)
+{
+    printf("Creating player view\n");
+    playerImg = SDL_LoadBMP("../images/player_default.bmp");
+    playerTexture = SDL_CreateTextureFromSurface(renderer, playerImg);
+}
+
+void drawPlayer(SDL_Renderer* renderer, int percentX, int percentY)
+{
+    int playerX = (GAME_VIEW_WIDTH * percentX) / 100;
+    playerX -= (PLAYER_WIDTH / 2);
+
+    int playerY = GAME_VIEW_HEIGHT;
+    playerY = (playerY * percentY) / 100;
+    playerY -= (PLAYER_HEIGHT / 2);
+
+    SDL_Rect playerImageBoundaries = {
+            GAME_VIEW_X + playerX,
+            GAME_VIEW_Y + playerY,
+            PLAYER_WIDTH,
+            PLAYER_HEIGHT
+    };
+    SDL_RenderCopy(renderer, playerTexture, NULL, &playerImageBoundaries);
+}
+
+void destroyPlayerView()
+{
+    printf("Destroying player view\n");
+    SDL_DestroyTexture(playerTexture);
+    SDL_FreeSurface(playerImg);
+}

@@ -5,6 +5,17 @@
 #define PLAYER_WIDTH 50
 #define PLAYER_HEIGHT 100
 
+class Player {
+public:
+    int percentX;
+    int percentY;
+
+    Player() {
+        this->percentX = 20;
+        this->percentY = 50;
+    }
+};
+
 struct GameState {
     bool hasStarted;
     bool hasFinished;
@@ -12,8 +23,7 @@ struct GameState {
 
     int score;
 
-    int jettX;
-    int jettY;
+    Player* player;
 };
 
 void initGame();
@@ -29,5 +39,7 @@ bool isGameRunning();
 bool hasGameStarted();
 
 char* getStartButtonLabel();
+
+Player* getPlayer();
 
 #endif //JJGAME_GAME_H

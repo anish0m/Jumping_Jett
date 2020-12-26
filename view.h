@@ -6,6 +6,8 @@
 #define GAP 50
 #define SMALL_GAP 10
 
+#define GAME_VIEW_X GAP
+#define GAME_VIEW_Y GAP
 #define GAME_VIEW_WIDTH (int)(SCREEN_WIDTH * 0.6)
 #define GAME_VIEW_HEIGHT SCREEN_HEIGHT - GAP - GAP
 
@@ -44,6 +46,9 @@
 #define START_BUTTON_WIDTH 80 - SMALL_GAP
 #define START_BUTTON_HEIGHT GAP - SMALL_GAP - SMALL_GAP
 
+#define PLAYER_WIDTH 15
+#define PLAYER_HEIGHT 30
+
 void drawBackgroundImage(SDL_Renderer* renderer);
 
 void drawJettPoster(SDL_Renderer* renderer);
@@ -57,5 +62,9 @@ void redrawStartButton(SDL_Renderer* renderer);
 void createAllViews(SDL_Renderer* renderer);
 
 void destroyAllViews();
+
+void createPlayerView(SDL_Renderer* renderer);
+void drawPlayer(SDL_Renderer* renderer, int percentX, int percentY);
+void destroyPlayerView();
 
 #endif //JJGAME_VIEW_H
