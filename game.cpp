@@ -16,6 +16,14 @@ void initGame() {
     };
 }
 
+void emitGameOverEvent()
+{
+    SDL_Event event;
+    SDL_memset(&event, 0, sizeof(event));
+    event.type = EVENT_JUMPING_JETT_GAME_OVER;
+    SDL_PushEvent(&event);
+}
+
 DWORD WINAPI runGameBackgroundProcess(void* _renderer)
 {
     SDL_Renderer* renderer = (SDL_Renderer*) _renderer;
@@ -23,11 +31,17 @@ DWORD WINAPI runGameBackgroundProcess(void* _renderer)
     while (isGameRunning())
     {
         drawBackgroundImage(renderer);
-        if (!gameState.player->isJumping)
+        if (gameState.player->isJumping)
         {
-            Sleep(100);
+            Sleep(10);
+            gameState.player->rise();
+        }
+        else
+        {
+            Sleep(50);
             gameState.player->fall();
         }
+
         if (gameState.player->isDead)
         {
             stopGame();
@@ -69,6 +83,7 @@ bool isGameRunning() {
     return hasGameStarted() && !hasGameEnded();
 }
 
-char* getStartButtonLabel() {
-    return isGameRunning() ? (char*)"STOP": (char*)"START";
+Player* getPlayer()
+{
+    return gameState.player;
 }

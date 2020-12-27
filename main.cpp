@@ -72,6 +72,7 @@ int main(int argc, char* argv[])
                 {
                     startGame(renderer);
 
+                    // Creating the thread for running the game in the background (generating obstacles, making jet fall etc.)
                     threadHandle = CreateThread(0, 0, runGameBackgroundProcess, renderer, 0, &backgroundThreadId);
 
                     recreateStartButton(renderer, (char*)"STOP");
@@ -79,6 +80,22 @@ int main(int argc, char* argv[])
                 }
                 SDL_RenderPresent(renderer);
             }
+        }
+        else if (e.type == SDL_KEYDOWN)
+        {
+            if (e.key.keysym.sym == SDLK_SPACE)
+            {
+                if (isGameRunning())
+                {
+                    printf("Space bar pressed\n");
+                    Player* player = getPlayer();
+                    player->startJump();
+                }
+            }
+        }
+        else if (e.type == EVENT_JUMPING_JETT_GAME_OVER)
+        {
+            TerminateThread(threadHandle, 0);
         }
     }
     CloseHandle(threadHandle);
