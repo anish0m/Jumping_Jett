@@ -126,10 +126,10 @@ SDL_Rect startButtonTitleRect = { START_BUTTON_X + SMALL_GAP, START_BUTTON_Y + 5
 SDL_Texture* startButtonTitleTexture;
 SDL_Surface* startButtonTitleSurface;
 
-void createStartButton(SDL_Renderer* renderer) {
+void createStartButton(SDL_Renderer* renderer, char* text) {
     printf("Creating start button\n");
     TTF_Font* sans = TTF_OpenFont("../fonts/OpenSans-Bold.ttf", 32);
-    startButtonTitleSurface = TTF_RenderText_Solid(sans, getStartButtonLabel(), black);
+    startButtonTitleSurface = TTF_RenderText_Solid(sans, text, black);
     startButtonTitleTexture = SDL_CreateTextureFromSurface(renderer, startButtonTitleSurface);
     TTF_CloseFont(sans);
 }
@@ -154,26 +154,12 @@ bool isStartButtonClicked(SDL_Event mouseDownEvent) {
         && y >= START_BUTTON_Y && y <= (START_BUTTON_Y + START_BUTTON_HEIGHT);
 }
 
-void redrawStartButton(SDL_Renderer* renderer) {
+void recreateStartButton(SDL_Renderer* renderer, char* text) {
     printf("Recreating the start button\n");
     destroyStartButton();
-    createStartButton(renderer);
+    createStartButton(renderer, text);
 }
 
-/********************************************************************/
-void createAllViews(SDL_Renderer* renderer) {
-    createBackgroundImage(renderer);
-    createJettPoster(renderer);
-    createAppDescription(renderer);
-    createStartButton(renderer);
-}
-
-void destroyAllViews() {
-    destroyBackgroundImage();
-    destroyJettPoster();
-    destroyAppDescription();
-    destroyStartButton();
-}
 
 /***********************************************/
 SDL_Surface *playerImg;
@@ -209,4 +195,22 @@ void destroyPlayerView()
     printf("Destroying player view\n");
     SDL_DestroyTexture(playerTexture);
     SDL_FreeSurface(playerImg);
+}
+
+
+/********************************************************************/
+void createAllViews(SDL_Renderer* renderer) {
+    createBackgroundImage(renderer);
+    createJettPoster(renderer);
+    createAppDescription(renderer);
+    createStartButton(renderer, "START");
+    createPlayerView(renderer);
+}
+
+void destroyAllViews() {
+    destroyBackgroundImage();
+    destroyJettPoster();
+    destroyAppDescription();
+    destroyStartButton();
+    destroyPlayerView();
 }

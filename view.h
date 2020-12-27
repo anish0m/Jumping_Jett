@@ -8,8 +8,8 @@
 
 #define GAME_VIEW_X GAP
 #define GAME_VIEW_Y GAP
-#define GAME_VIEW_WIDTH (int)(SCREEN_WIDTH * 0.6)
-#define GAME_VIEW_HEIGHT SCREEN_HEIGHT - GAP - GAP
+#define GAME_VIEW_WIDTH ((int)(SCREEN_WIDTH * 0.6))
+#define GAME_VIEW_HEIGHT (SCREEN_HEIGHT - GAP - GAP)
 
 #define JETT_WIDTH      170
 #define JETT_HEIGHT     230
@@ -57,14 +57,12 @@ void drawAppDescription(SDL_Renderer* renderer);
 
 void drawStartButton(SDL_Renderer* renderer);
 bool isStartButtonClicked(SDL_Event mouseDownEvent);
-void redrawStartButton(SDL_Renderer* renderer);
+void recreateStartButton(SDL_Renderer* renderer, char* text);
 
 void createAllViews(SDL_Renderer* renderer);
 
 void destroyAllViews();
 
-void createPlayerView(SDL_Renderer* renderer);
 void drawPlayer(SDL_Renderer* renderer, int percentX, int percentY);
-void destroyPlayerView();
 
 #endif //JJGAME_VIEW_H

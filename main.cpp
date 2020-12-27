@@ -3,6 +3,8 @@
 #include <SDL_ttf.h>
 #include "view.h"
 #include "game.h"
+#include <thread>
+
 using namespace  std;
 
 int main(int argc, char* argv[])
@@ -22,11 +24,23 @@ int main(int argc, char* argv[])
 
     printf("SDL Window created\n");
 
+    std::thread backgroundThread;
+
     initGame();
     printf("Game initialized successfully\n");
 
     createAllViews(renderer);
     printf("Game views created\n");
+    // Set background color Black
+    SDL_SetRenderDrawColor(renderer, 35, 43, 43, 0xFF);
+    SDL_RenderClear(renderer);
+    // Draw background image, jet image
+    drawBackgroundImage(renderer);
+    drawJettPoster(renderer);
+    drawAppDescription(renderer);
+    drawStartButton(renderer);
+    // Update screen
+    SDL_RenderPresent(renderer);
 
     bool quit = false;
     while(!quit)
@@ -49,38 +63,27 @@ int main(int argc, char* argv[])
 
                 if (isGameRunning())
                 {
-                    destroyPlayerView();
+                    backgroundThread.join();
                     stopGame();
+                    recreateStartButton(renderer, "START");
+                    drawStartButton(renderer);
                 }
                 else
                 {
-                    startGame();
-                    createPlayerView(renderer);
+                    startGame(renderer);
+                    backgroundThread = std::thread{runGameBackgroundProcess, renderer};
+                    recreateStartButton(renderer, "STOP");
+                    drawStartButton(renderer);
                 }
-                redrawStartButton(renderer);
+                SDL_RenderPresent(renderer);
             }
         }
-
-        // Set background color Black
-        SDL_SetRenderDrawColor(renderer, 35, 43, 43, 0xFF);
-        SDL_RenderClear(renderer);
-
-        // Draw background image, jet image
-        drawBackgroundImage(renderer);
-        drawJettPoster(renderer);
-        drawAppDescription(renderer);
-        drawStartButton(renderer);
-
-        // Draw game
-        if (isGameRunning())
+        else if (e.type == EVENT_JUMPING_JETT_GAME_OVER)
         {
-            Player* player = getPlayer();
-            drawPlayer(renderer, player->percentX, player->percentY);
+            try {backgroundThread.join();} catch(int e){}
         }
-
-        // Update screen
-        SDL_RenderPresent(renderer);
     }
+    backgroundThread.join();
     destroyAllViews();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

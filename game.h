@@ -5,14 +5,35 @@
 #define PLAYER_WIDTH 50
 #define PLAYER_HEIGHT 100
 
+#include "view.h"
+
+#define EVENT_JUMPING_JETT_GAME_OVER 1567
+
 class Player {
 public:
     int percentX;
     int percentY;
+    bool isJumping;
+    bool isDead;
 
     Player() {
         this->percentX = 20;
         this->percentY = 50;
+        this->isJumping = false;
+        this->isDead = false;
+    }
+
+    bool hasTouchedGround()
+    {
+        return this->percentY >= 88;
+    }
+
+    void fall() {
+        this->percentY++;
+        if (this->hasTouchedGround())
+        {
+            this->isDead = true;
+        }
     }
 };
 
@@ -26,9 +47,11 @@ struct GameState {
     Player* player;
 };
 
+void runGameBackgroundProcess(SDL_Renderer* renderer);
+
 void initGame();
 
-void startGame();
+void startGame(SDL_Renderer* renderer);
 
 void stopGame();
 
@@ -39,7 +62,5 @@ bool isGameRunning();
 bool hasGameStarted();
 
 char* getStartButtonLabel();
-
-Player* getPlayer();
 
 #endif //JJGAME_GAME_H
