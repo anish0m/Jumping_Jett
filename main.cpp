@@ -64,6 +64,7 @@ int main(int argc, char* argv[])
 
                 if (isGameRunning())
                 {
+                    TerminateThread(threadHandle, 0);
                     stopGame();
                     recreateStartButton(renderer, (char*)"START");
                     drawStartButton(renderer);
@@ -93,11 +94,8 @@ int main(int argc, char* argv[])
                 }
             }
         }
-        else if (e.type == EVENT_JUMPING_JETT_GAME_OVER)
-        {
-            TerminateThread(threadHandle, 0);
-        }
     }
+
     CloseHandle(threadHandle);
     destroyAllViews();
     SDL_DestroyRenderer(renderer);

@@ -16,14 +16,6 @@ void initGame() {
     };
 }
 
-void emitGameOverEvent()
-{
-    SDL_Event event;
-    SDL_memset(&event, 0, sizeof(event));
-    event.type = EVENT_JUMPING_JETT_GAME_OVER;
-    SDL_PushEvent(&event);
-}
-
 DWORD WINAPI runGameBackgroundProcess(void* _renderer)
 {
     SDL_Renderer* renderer = (SDL_Renderer*) _renderer;

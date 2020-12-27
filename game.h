@@ -5,8 +5,6 @@
 #define PLAYER_WIDTH 50
 #define PLAYER_HEIGHT 100
 
-#define EVENT_JUMPING_JETT_GAME_OVER 1567
-
 #include "view.h"
 #include <windows.h>
 
