@@ -65,14 +65,14 @@ int main(int argc, char* argv[])
                 {
                     backgroundThread.join();
                     stopGame();
-                    recreateStartButton(renderer, "START");
+                    recreateStartButton(renderer, (char*)"START");
                     drawStartButton(renderer);
                 }
                 else
                 {
                     startGame(renderer);
                     backgroundThread = std::thread{runGameBackgroundProcess, renderer};
-                    recreateStartButton(renderer, "STOP");
+                    recreateStartButton(renderer, (char*)"STOP");
                     drawStartButton(renderer);
                 }
                 SDL_RenderPresent(renderer);

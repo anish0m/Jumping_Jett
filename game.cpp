@@ -40,7 +40,7 @@ void runGameBackgroundProcess(SDL_Renderer* renderer)
         if (gameState.player->isDead)
         {
             stopGame();
-            recreateStartButton(renderer, "START");
+            recreateStartButton(renderer, (char*)"START");
             drawStartButton(renderer);
             SDL_RenderPresent(renderer);
             emitGameOverEvent();
