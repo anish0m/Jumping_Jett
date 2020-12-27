@@ -122,6 +122,7 @@ void stopGame() {
     gameState.hasStarted = true;
     gameState.hasFinished = true;
     delete gameState.player;
+    gameState.obstacles.erase(gameState.obstacles.begin(), gameState.obstacles.end());
 }
 
 bool hasGameStarted() {
