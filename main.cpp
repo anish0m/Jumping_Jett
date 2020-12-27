@@ -80,10 +80,6 @@ int main(int argc, char* argv[])
                 SDL_RenderPresent(renderer);
             }
         }
-        else if (e.type == EVENT_JUMPING_JETT_GAME_OVER)
-        {
-
-        }
     }
     CloseHandle(threadHandle);
     destroyAllViews();

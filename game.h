@@ -8,8 +8,6 @@
 #include "view.h"
 #include <windows.h>
 
-#define EVENT_JUMPING_JETT_GAME_OVER 1567
-
 class Player {
 public:
     int percentX;
@@ -61,7 +59,5 @@ bool hasGameEnded();
 bool isGameRunning();
 
 bool hasGameStarted();
-
-char* getStartButtonLabel();
 
 #endif //JJGAME_GAME_H

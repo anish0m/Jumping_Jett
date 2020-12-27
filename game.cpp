@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <SDL.h>
 #include "game.h"
-#include "view.h"
 #include <windows.h>
 
 struct GameState gameState;
@@ -15,21 +14,6 @@ void initGame() {
             0,
             NULL
     };
-}
-
-void emitGameOverEvent()
-{
-    SDL_Event event;
-    SDL_memset(&event, 0, sizeof(event));
-    event.type = EVENT_JUMPING_JETT_GAME_OVER;
-    SDL_PushEvent(&event);
-}
-
-DWORD WINAPI myThread(LPVOID lpParameter)
-{
-    unsigned int& myCounter = *((unsigned int*)lpParameter);
-    while(myCounter < 0xFFFFFFFF) ++myCounter;
-    return 0;
 }
 
 DWORD WINAPI runGameBackgroundProcess(void* _renderer)
@@ -50,7 +34,6 @@ DWORD WINAPI runGameBackgroundProcess(void* _renderer)
             recreateStartButton(renderer, (char*)"START");
             drawStartButton(renderer);
             SDL_RenderPresent(renderer);
-            emitGameOverEvent();
             break;
         }
         drawPlayer(renderer, gameState.player->percentX, gameState.player->percentY);
