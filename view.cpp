@@ -197,6 +197,16 @@ void destroyPlayerView()
     SDL_FreeSurface(playerImg);
 }
 
+/***************************************/
+void drawObstacle(SDL_Renderer* renderer, bool isAtBottom, int percentX, int r, int g, int b)
+{
+    int x = GAME_VIEW_X + ((GAME_VIEW_WIDTH * percentX) / 100) - OBSTACLE_WIDTH;
+    int y = isAtBottom ? GAME_VIEW_Y + GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT: GAME_VIEW_Y;
+
+    SDL_Rect obstacleRect = { x, y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT };
+    SDL_SetRenderDrawColor(renderer, r, g, b, 0xFF);
+    SDL_RenderFillRect(renderer, &obstacleRect);
+}
 
 /********************************************************************/
 void createAllViews(SDL_Renderer* renderer) {

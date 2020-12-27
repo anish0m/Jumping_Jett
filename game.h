@@ -7,6 +7,8 @@
 
 #include "view.h"
 #include <windows.h>
+#include <vector>
+using namespace std;
 
 class Player {
 public:
@@ -67,6 +69,36 @@ public:
     }
 };
 
+#define OBSTACLE_WIDTH 30
+#define OBSTACLE_HEIGHT 100
+
+class Obstacle
+{
+public:
+    int percentX;
+    bool isAtBottom;
+    int colorR, colorG, colorB;
+
+    Obstacle()
+    {
+        this->isAtBottom = (bool)(rand() % 2);
+        this->percentX = 100;
+        this->colorR = rand() % 255;
+        this->colorG = rand() % 255;
+        this->colorB = rand() % 255;
+    }
+
+    void moveLeft()
+    {
+        this->percentX--;
+    }
+
+    bool hasReachedLeft()
+    {
+        return OBSTACLE_WIDTH >= ((this->percentX * GAME_VIEW_WIDTH) / 100);
+    }
+};
+
 struct GameState {
     bool hasStarted;
     bool hasFinished;
@@ -75,9 +107,14 @@ struct GameState {
     int score;
 
     Player* player;
+    vector<Obstacle*>obstacles;
 };
 
-DWORD WINAPI runGameBackgroundProcess(void* _renderer);
+DWORD WINAPI jettThread(void* _renderer);
+
+DWORD WINAPI obstacleCreatorThread(void* _renderer);
+
+DWORD WINAPI obstacleMoverThread(void* _renderer);
 
 void initGame();
 
@@ -92,5 +129,7 @@ bool isGameRunning();
 bool hasGameStarted();
 
 Player* getPlayer();
+
+void generateObstacle();
 
 #endif //JJGAME_GAME_H

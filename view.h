@@ -62,4 +62,6 @@ void destroyAllViews();
 
 void drawPlayer(SDL_Renderer* renderer, int percentX, int percentY);
 
+void drawObstacle(SDL_Renderer* renderer, bool isAtBottom, int percentX, int r, int g, int b);
+
 #endif //JJGAME_VIEW_H

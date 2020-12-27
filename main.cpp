@@ -24,8 +24,8 @@ int main(int argc, char* argv[])
 
     printf("SDL Window created\n");
 
-    DWORD backgroundThreadId;
-    HANDLE threadHandle;
+    DWORD jettThreadId, obstacleCreatorThreadId, obstacleMoverThreadId;
+    HANDLE jettThreadHandle, obstacleCreatorThreadHandle, obstacleMoverThreadHandle;
 
     initGame();
     printf("Game initialized successfully\n");
@@ -64,7 +64,10 @@ int main(int argc, char* argv[])
 
                 if (isGameRunning())
                 {
-                    TerminateThread(threadHandle, 0);
+                    TerminateThread(jettThreadHandle, 0);
+                    TerminateThread(obstacleCreatorThreadHandle, 0);
+                    TerminateThread(obstacleMoverThreadHandle, 0);
+
                     stopGame();
                     recreateStartButton(renderer, (char*)"START");
                     drawStartButton(renderer);
@@ -74,7 +77,32 @@ int main(int argc, char* argv[])
                     startGame(renderer);
 
                     // Creating the thread for running the game in the background (generating obstacles, making jet fall etc.)
-                    threadHandle = CreateThread(0, 0, runGameBackgroundProcess, renderer, 0, &backgroundThreadId);
+                    jettThreadHandle = CreateThread(
+                            0,
+                            0,
+                            jettThread,
+                            renderer,
+                            0,
+                            &jettThreadId
+                            );
+
+                    obstacleCreatorThreadHandle = CreateThread(
+                            0,
+                            0,
+                            obstacleCreatorThread,
+                            renderer,
+                            0,
+                            &obstacleCreatorThreadId
+                            );
+
+                    obstacleMoverThreadHandle = CreateThread(
+                            0,
+                            0,
+                            obstacleMoverThread,
+                            renderer,
+                            0,
+                            &obstacleCreatorThreadId
+                    );
 
                     recreateStartButton(renderer, (char*)"STOP");
                     drawStartButton(renderer);
@@ -96,8 +124,12 @@ int main(int argc, char* argv[])
         }
     }
 
-    CloseHandle(threadHandle);
+    CloseHandle(jettThreadHandle);
+    CloseHandle(obstacleCreatorThreadHandle);
+    CloseHandle(obstacleMoverThreadHandle);
+
     destroyAllViews();
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
