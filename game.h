@@ -6,6 +6,7 @@
 #define PLAYER_HEIGHT 100
 
 #include "view.h"
+#include <windows.h>
 
 #define EVENT_JUMPING_JETT_GAME_OVER 1567
 
@@ -47,7 +48,7 @@ struct GameState {
     Player* player;
 };
 
-void runGameBackgroundProcess(SDL_Renderer* renderer);
+DWORD WINAPI runGameBackgroundProcess(void* _renderer);
 
 void initGame();
 

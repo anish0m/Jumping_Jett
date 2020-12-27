@@ -2,8 +2,7 @@
 #include <SDL.h>
 #include "game.h"
 #include "view.h"
-#include <thread>
-#include <chrono>
+#include <windows.h>
 
 struct GameState gameState;
 
@@ -26,15 +25,23 @@ void emitGameOverEvent()
     SDL_PushEvent(&event);
 }
 
-void runGameBackgroundProcess(SDL_Renderer* renderer)
+DWORD WINAPI myThread(LPVOID lpParameter)
 {
+    unsigned int& myCounter = *((unsigned int*)lpParameter);
+    while(myCounter < 0xFFFFFFFF) ++myCounter;
+    return 0;
+}
+
+DWORD WINAPI runGameBackgroundProcess(void* _renderer)
+{
+    SDL_Renderer* renderer = (SDL_Renderer*) _renderer;
     printf("Starting game background process\n");
     while (isGameRunning())
     {
         drawBackgroundImage(renderer);
         if (!gameState.player->isJumping)
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            Sleep(100);
             gameState.player->fall();
         }
         if (gameState.player->isDead)
@@ -50,6 +57,7 @@ void runGameBackgroundProcess(SDL_Renderer* renderer)
         SDL_RenderPresent(renderer);
     }
     printf("Stopping game background process\n");
+    return 0;
 }
 
 void startGame(SDL_Renderer* renderer) {

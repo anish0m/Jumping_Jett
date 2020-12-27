@@ -3,7 +3,7 @@
 #include <SDL_ttf.h>
 #include "view.h"
 #include "game.h"
-#include <thread>
+#include <windows.h>
 
 using namespace  std;
 
@@ -24,7 +24,8 @@ int main(int argc, char* argv[])
 
     printf("SDL Window created\n");
 
-    thread backgroundThread;
+    DWORD backgroundThreadId;
+    HANDLE threadHandle;
 
     initGame();
     printf("Game initialized successfully\n");
@@ -63,7 +64,6 @@ int main(int argc, char* argv[])
 
                 if (isGameRunning())
                 {
-                    backgroundThread.join();
                     stopGame();
                     recreateStartButton(renderer, (char*)"START");
                     drawStartButton(renderer);
@@ -71,7 +71,9 @@ int main(int argc, char* argv[])
                 else
                 {
                     startGame(renderer);
-                    backgroundThread = thread{runGameBackgroundProcess, renderer};
+
+                    threadHandle = CreateThread(0, 0, runGameBackgroundProcess, renderer, 0, &backgroundThreadId);
+
                     recreateStartButton(renderer, (char*)"STOP");
                     drawStartButton(renderer);
                 }
@@ -80,10 +82,10 @@ int main(int argc, char* argv[])
         }
         else if (e.type == EVENT_JUMPING_JETT_GAME_OVER)
         {
-            try {backgroundThread.join();} catch(int e){}
+
         }
     }
-    backgroundThread.join();
+    CloseHandle(threadHandle);
     destroyAllViews();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
