@@ -46,9 +46,6 @@
 #define START_BUTTON_WIDTH 80 - SMALL_GAP
 #define START_BUTTON_HEIGHT GAP - SMALL_GAP - SMALL_GAP
 
-#define PLAYER_WIDTH 15
-#define PLAYER_HEIGHT 30
-
 void drawBackgroundImage(SDL_Renderer* renderer);
 
 void drawJettPoster(SDL_Renderer* renderer);
