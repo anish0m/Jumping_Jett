@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
                             obstacleMoverThread,
                             renderer,
                             0,
-                            &obstacleCreatorThreadId
+                            &obstacleMoverThreadId
                     );
 
                     recreateStartButton(renderer, (char*)"STOP");
