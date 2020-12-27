@@ -10,6 +10,36 @@
 #include <vector>
 using namespace std;
 
+#define OBSTACLE_WIDTH 30
+#define OBSTACLE_HEIGHT 100
+
+class Obstacle
+{
+public:
+    int percentX;
+    bool isAtBottom;
+    int colorR, colorG, colorB;
+
+    Obstacle()
+    {
+        this->isAtBottom = (bool)(rand() % 2);
+        this->percentX = 100;
+        this->colorR = rand() % 255;
+        this->colorG = rand() % 255;
+        this->colorB = rand() % 255;
+    }
+
+    void moveLeft()
+    {
+        this->percentX--;
+    }
+
+    bool hasReachedLeft()
+    {
+        return OBSTACLE_WIDTH >= ((this->percentX * GAME_VIEW_WIDTH) / 100);
+    }
+};
+
 class Player {
 public:
     int percentX;
@@ -67,35 +97,25 @@ public:
             }
         }
     }
-};
 
-#define OBSTACLE_WIDTH 30
-#define OBSTACLE_HEIGHT 100
-
-class Obstacle
-{
-public:
-    int percentX;
-    bool isAtBottom;
-    int colorR, colorG, colorB;
-
-    Obstacle()
+    bool hasCollisionWithObstacle(Obstacle* obstacle)
     {
-        this->isAtBottom = (bool)(rand() % 2);
-        this->percentX = 100;
-        this->colorR = rand() % 255;
-        this->colorG = rand() % 255;
-        this->colorB = rand() % 255;
-    }
+        int playerToObstacleDistance = abs(obstacle->percentX - this->percentX) * GAME_VIEW_WIDTH;
 
-    void moveLeft()
-    {
-        this->percentX--;
-    }
+        int collisionDistance = (PLAYER_WIDTH + OBSTACLE_WIDTH) / 2;
 
-    bool hasReachedLeft()
-    {
-        return OBSTACLE_WIDTH >= ((this->percentX * GAME_VIEW_WIDTH) / 100);
+        if (playerToObstacleDistance > collisionDistance) return false;
+
+        if (obstacle->isAtBottom)
+        {
+            int playerLegY = (this->percentY * GAME_VIEW_HEIGHT / 100) + (PLAYER_HEIGHT / 2);
+            return playerLegY >= GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT;
+        }
+        else
+        {
+            int playerHeadY = (this->percentY * GAME_VIEW_HEIGHT / 100) - (PLAYER_HEIGHT / 2);
+            return playerHeadY <= OBSTACLE_HEIGHT;
+        }
     }
 };
 

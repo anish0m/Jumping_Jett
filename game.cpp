@@ -43,6 +43,16 @@ DWORD WINAPI jettThread(void* _renderer)
             gameState.player->fall();
         }
 
+        for (int i = 0; i < gameState.obstacles.size(); i++)
+        {
+            Obstacle* obstacle = gameState.obstacles[0];
+            if (gameState.player->hasCollisionWithObstacle(obstacle))
+            {
+                gameState.player->isDead = true;
+                break;
+            }
+        }
+
         if (gameState.player->isDead)
         {
             stopGame();
