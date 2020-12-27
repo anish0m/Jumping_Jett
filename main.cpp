@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 
     printf("SDL Window created\n");
 
-    std::thread backgroundThread;
+    thread backgroundThread;
 
     initGame();
     printf("Game initialized successfully\n");
@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
                 else
                 {
                     startGame(renderer);
-                    backgroundThread = std::thread{runGameBackgroundProcess, renderer};
+                    backgroundThread = thread{runGameBackgroundProcess, renderer};
                     recreateStartButton(renderer, (char*)"STOP");
                     drawStartButton(renderer);
                 }
