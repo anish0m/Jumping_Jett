@@ -27,25 +27,27 @@ void drawAllObstacles(SDL_Renderer* renderer)
 
 DWORD WINAPI jettThread(void* _renderer)
 {
+    Player* player = getPlayer();
+
     while (isGameRunning())
     {
-        if (gameState.player->isJumping)
+        if (player->isJumping)
         {
             Sleep(10);
-            gameState.player->rise();
+            player->rise();
         }
         else
         {
             Sleep(50);
-            gameState.player->fall();
+            player->fall();
         }
 
         if (gameState.obstacles.size() > 0)
         {
             Obstacle* obstacle = gameState.obstacles[0];
-            if (gameState.player->hasCollisionWithObstacle(obstacle))
+            if (player->hasCollisionWithObstacle(obstacle))
             {
-                gameState.player->isDead = true;
+                player->isDead = true;
                 break;
             }
         }
