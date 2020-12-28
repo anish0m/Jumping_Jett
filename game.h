@@ -16,14 +16,14 @@ using namespace std;
 class Obstacle
 {
 public:
-    int percentX;
+    int positionX;
     bool isAtBottom;
     int colorR, colorG, colorB;
 
     Obstacle()
     {
         this->isAtBottom = (bool)(rand() % 2);
-        this->percentX = 100;
+        this->positionX = GAME_VIEW_WIDTH + GAME_VIEW_X - OBSTACLE_WIDTH;
         this->colorR = rand() % 255;
         this->colorG = rand() % 255;
         this->colorB = rand() % 255;
@@ -31,12 +31,12 @@ public:
 
     void moveLeft()
     {
-        this->percentX--;
+        this->positionX--;
     }
 
     bool hasReachedLeft()
     {
-        return OBSTACLE_WIDTH >= ((this->percentX * GAME_VIEW_WIDTH) / 100);
+        return this->positionX <= GAME_VIEW_X;
     }
 };
 
@@ -100,7 +100,10 @@ public:
 
     bool hasCollisionWithObstacle(Obstacle* obstacle)
     {
-        int playerToObstacleDistance = abs(obstacle->percentX - this->percentX) * GAME_VIEW_WIDTH;
+        int playerMidX = (this->percentX * GAME_VIEW_WIDTH / 100);
+        int obstacleMidX = obstacle->positionX - (OBSTACLE_WIDTH/2);
+
+        int playerToObstacleDistance = abs(playerMidX - obstacleMidX) ;
 
         int collisionDistance = (PLAYER_WIDTH + OBSTACLE_WIDTH) / 2;
 

@@ -21,7 +21,7 @@ void drawAllObstacles(SDL_Renderer* renderer)
     for(int i = 0; i < gameState.obstacles.size(); i++)
     {
         Obstacle* obstacle = gameState.obstacles[i];
-        drawObstacle(renderer, obstacle->isAtBottom, obstacle->percentX, obstacle->colorR, obstacle->colorG, obstacle->colorB);
+        drawObstacle(renderer, obstacle->isAtBottom, obstacle->positionX, obstacle->colorR, obstacle->colorG, obstacle->colorB);
     }
 }
 
@@ -78,7 +78,7 @@ DWORD WINAPI obstacleMoverThread(void* _renderer)
 {
     while(isGameRunning())
     {
-        Sleep(50);
+        Sleep(10);
         vector<int> toRemove;
 
         if (gameState.player->isDead)
