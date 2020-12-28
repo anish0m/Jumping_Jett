@@ -40,7 +40,7 @@ DWORD WINAPI jettThread(void* _renderer)
             gameState.player->fall();
         }
 
-        for (int i = 0; i < gameState.obstacles.size(); i++)
+        if (gameState.obstacles.size() > 0)
         {
             Obstacle* obstacle = gameState.obstacles[0];
             if (gameState.player->hasCollisionWithObstacle(obstacle))
