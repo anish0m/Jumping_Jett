@@ -25,13 +25,10 @@ void drawAllObstacles(SDL_Renderer* renderer)
     }
 }
 
-DWORD WINAPI jettThread(void* _renderer)
+DWORD WINAPI jettThread(void* args)
 {
-    SDL_Renderer* renderer = (SDL_Renderer*) _renderer;
-    printf("Starting game background process\n");
     while (isGameRunning())
     {
-        drawBackgroundImage(renderer);
         if (gameState.player->isJumping)
         {
             Sleep(10);
@@ -52,26 +49,11 @@ DWORD WINAPI jettThread(void* _renderer)
                 break;
             }
         }
-
-        if (gameState.player->isDead)
-        {
-            stopGame();
-            recreateStartButton(renderer, (char*)"START");
-            drawStartButton(renderer);
-            SDL_RenderPresent(renderer);
-            break;
-        }
-
-        drawPlayer(renderer, gameState.player->percentX, gameState.player->percentY);
-        drawAllObstacles(renderer);
-
-        SDL_RenderPresent(renderer);
     }
-    printf("Stopping game background process\n");
     return 0;
 }
 
-DWORD WINAPI obstacleCreatorThread(void* _renderer)
+DWORD WINAPI obstacleCreatorThread(void* args)
 {
     while(isGameRunning())
     {
@@ -85,7 +67,7 @@ DWORD WINAPI obstacleCreatorThread(void* _renderer)
     return 0;
 }
 
-DWORD WINAPI obstacleMoverThread(void* _renderer)
+DWORD WINAPI obstacleMoverThread(void* args)
 {
     while(isGameRunning())
     {
@@ -110,7 +92,30 @@ DWORD WINAPI obstacleMoverThread(void* _renderer)
     return 0;
 }
 
-void startGame(SDL_Renderer* renderer) {
+DWORD WINAPI viewUpdaterThread(void* _renderer)
+{
+    SDL_Renderer* renderer = (SDL_Renderer*) _renderer;
+
+    while (isGameRunning())
+    {
+        Sleep(10);
+        if (gameState.player->isDead)
+        {
+            stopGame();
+            recreateStartButton(renderer, (char*)"START");
+            drawStartButton(renderer);
+            SDL_RenderPresent(renderer);
+            break;
+        }
+        drawBackgroundImage(renderer);
+        drawPlayer(renderer, gameState.player->percentX, gameState.player->percentY);
+        drawAllObstacles(renderer);
+        SDL_RenderPresent(renderer);
+    }
+    return 0;
+}
+
+void startGame() {
     printf("Starting the game\n");
     gameState.hasStarted = true;
     gameState.hasFinished = false;

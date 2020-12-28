@@ -109,11 +109,19 @@ public:
         if (obstacle->isAtBottom)
         {
             int playerLegY = (this->percentY * GAME_VIEW_HEIGHT / 100) + (PLAYER_HEIGHT / 2);
+            if (playerLegY >= GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT)
+            {
+                printf("Down COLLISSION %d %d\n", playerLegY, GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT);
+            }
             return playerLegY >= GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT;
         }
         else
         {
             int playerHeadY = (this->percentY * GAME_VIEW_HEIGHT / 100) - (PLAYER_HEIGHT / 2);
+            if (playerHeadY <= OBSTACLE_HEIGHT)
+            {
+                printf("Up COLLISSION %d %d\n", playerHeadY, OBSTACLE_HEIGHT);
+            }
             return playerHeadY <= OBSTACLE_HEIGHT;
         }
     }
@@ -130,15 +138,17 @@ struct GameState {
     vector<Obstacle*>obstacles;
 };
 
-DWORD WINAPI jettThread(void* _renderer);
+DWORD WINAPI jettThread(void* args);
 
-DWORD WINAPI obstacleCreatorThread(void* _renderer);
+DWORD WINAPI obstacleCreatorThread(void* args);
 
-DWORD WINAPI obstacleMoverThread(void* _renderer);
+DWORD WINAPI obstacleMoverThread(void* args);
+
+DWORD WINAPI viewUpdaterThread(void* _renderer);
 
 void initGame();
 
-void startGame(SDL_Renderer* renderer);
+void startGame();
 
 void stopGame();
 

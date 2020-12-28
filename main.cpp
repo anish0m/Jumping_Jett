@@ -24,8 +24,8 @@ int main(int argc, char* argv[])
 
     printf("SDL Window created\n");
 
-    DWORD jettThreadId, obstacleCreatorThreadId, obstacleMoverThreadId;
-    HANDLE jettThreadHandle, obstacleCreatorThreadHandle, obstacleMoverThreadHandle;
+    DWORD jettThreadId, obstacleCreatorThreadId, obstacleMoverThreadId, viewUpdaterThreadId;
+    HANDLE jettThreadHandle, obstacleCreatorThreadHandle, obstacleMoverThreadHandle, viewUpdaterThreadHandle;
 
     initGame();
     printf("Game initialized successfully\n");
@@ -67,6 +67,7 @@ int main(int argc, char* argv[])
                     TerminateThread(jettThreadHandle, 0);
                     TerminateThread(obstacleCreatorThreadHandle, 0);
                     TerminateThread(obstacleMoverThreadHandle, 0);
+                    TerminateThread(viewUpdaterThreadHandle, 0);
 
                     stopGame();
                     recreateStartButton(renderer, (char*)"START");
@@ -74,7 +75,7 @@ int main(int argc, char* argv[])
                 }
                 else
                 {
-                    startGame(renderer);
+                    startGame();
 
                     // Creating the thread for running the game in the background (generating obstacles, making jet fall etc.)
                     jettThreadHandle = CreateThread(
@@ -104,6 +105,15 @@ int main(int argc, char* argv[])
                             &obstacleMoverThreadId
                     );
 
+                    viewUpdaterThreadHandle = CreateThread(
+                            0,
+                            0,
+                            viewUpdaterThread,
+                            renderer,
+                            0,
+                            &viewUpdaterThreadId
+                    );
+
                     recreateStartButton(renderer, (char*)"STOP");
                     drawStartButton(renderer);
                 }
@@ -127,6 +137,7 @@ int main(int argc, char* argv[])
     CloseHandle(jettThreadHandle);
     CloseHandle(obstacleCreatorThreadHandle);
     CloseHandle(obstacleMoverThreadHandle);
+    CloseHandle(viewUpdaterThreadHandle);
 
     destroyAllViews();
 
