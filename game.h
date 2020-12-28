@@ -138,11 +138,11 @@ struct GameState {
     vector<Obstacle*>obstacles;
 };
 
-DWORD WINAPI jettThread(void* args);
+DWORD WINAPI jettThread(void* _renderer);
 
-DWORD WINAPI obstacleCreatorThread(void* args);
+DWORD WINAPI obstacleCreatorThread(void* _renderer);
 
-DWORD WINAPI obstacleMoverThread(void* args);
+DWORD WINAPI obstacleMoverThread(void* _renderer);
 
 DWORD WINAPI viewUpdaterThread(void* _renderer);
 

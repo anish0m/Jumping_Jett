@@ -25,7 +25,7 @@ void drawAllObstacles(SDL_Renderer* renderer)
     }
 }
 
-DWORD WINAPI jettThread(void* args)
+DWORD WINAPI jettThread(void* _renderer)
 {
     while (isGameRunning())
     {
@@ -53,7 +53,7 @@ DWORD WINAPI jettThread(void* args)
     return 0;
 }
 
-DWORD WINAPI obstacleCreatorThread(void* args)
+DWORD WINAPI obstacleCreatorThread(void* _renderer)
 {
     while(isGameRunning())
     {
@@ -67,7 +67,7 @@ DWORD WINAPI obstacleCreatorThread(void* args)
     return 0;
 }
 
-DWORD WINAPI obstacleMoverThread(void* args)
+DWORD WINAPI obstacleMoverThread(void* _renderer)
 {
     while(isGameRunning())
     {
