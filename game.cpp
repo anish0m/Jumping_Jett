@@ -42,6 +42,11 @@ DWORD WINAPI jettThread(void* _renderer)
             player->fall();
         }
 
+        if (player->isDead)
+        {
+            break;
+        }
+
         if (gameState.obstacles.size() > 0)
         {
             Obstacle* obstacle = gameState.obstacles[0];
@@ -75,6 +80,11 @@ DWORD WINAPI obstacleMoverThread(void* _renderer)
     {
         Sleep(50);
         vector<int> toRemove;
+
+        if (gameState.player->isDead)
+        {
+            break;
+        }
 
         for(int i = 0; i < gameState.obstacles.size(); i++)
         {
