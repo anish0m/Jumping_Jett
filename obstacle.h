@@ -1,6 +1,7 @@
 #ifndef JJGAME_OBSTACLE_H
 #define JJGAME_OBSTACLE_H
 
+#include <stdlib.h>
 #include "dimensions.h"
 
 class Obstacle

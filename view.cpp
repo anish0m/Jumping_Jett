@@ -212,13 +212,13 @@ But (75, 150) should not be the players "Starting point". (75, 150) should be pl
 
 If player's size is 40x30, we have to draw the player at ((75-20), (150-15)) point, or at (55, 135)
 */
-void drawPlayer(SDL_Renderer *renderer, int percentX, int percentY)
+void drawPlayer(SDL_Renderer *renderer, Player* player)
 {
-    int playerX = (GAME_VIEW_WIDTH * percentX) / 100;
+    int playerX = (GAME_VIEW_WIDTH * player->percentX) / 100;
     playerX -= (PLAYER_WIDTH / 2);
 
     int playerY = GAME_VIEW_HEIGHT;
-    playerY = (playerY * percentY) / 100;
+    playerY = (playerY * player->percentY) / 100;
     playerY -= (PLAYER_HEIGHT / 2);
 
     SDL_Rect playerImageBoundaries = {
@@ -237,13 +237,13 @@ void destroyPlayerView()
 }
 
 /***************************************/
-void drawObstacle(SDL_Renderer *renderer, bool isAtBottom, int positionX, int r, int g, int b)
+void drawObstacle(SDL_Renderer *renderer, Obstacle* obstacle)
 {
-    int x = positionX;
-    int y = isAtBottom ? GAME_VIEW_Y + GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT : GAME_VIEW_Y;
+    int x = obstacle->positionX;
+    int y = obstacle->isAtBottom ? GAME_VIEW_Y + GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT : GAME_VIEW_Y;
 
     SDL_Rect obstacleRect = {x, y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT};
-    SDL_SetRenderDrawColor(renderer, r, g, b, 0xFF);
+    SDL_SetRenderDrawColor(renderer, obstacle->colorR, obstacle->colorG, obstacle->colorB, 0xFF);
     SDL_RenderFillRect(renderer, &obstacleRect);
 }
 

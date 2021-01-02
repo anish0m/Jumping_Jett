@@ -21,7 +21,7 @@ void drawAllObstacles(SDL_Renderer *renderer)
     for (int i = 0; i < gameState.obstacles.size(); i++)
     {
         Obstacle *obstacle = gameState.obstacles[i];
-        drawObstacle(renderer, obstacle->isAtBottom, obstacle->positionX, obstacle->colorR, obstacle->colorG, obstacle->colorB);
+        drawObstacle(renderer, obstacle);
     }
 }
 
@@ -129,7 +129,7 @@ DWORD WINAPI viewUpdaterThread(void *_renderer)
         drawBackgroundImage(renderer);
 
         // Draw Jett at (x%, y%)
-        drawPlayer(renderer, gameState.player->percentX, gameState.player->percentY);
+        drawPlayer(renderer, gameState.player);
 
         // Draw obstacles
         drawAllObstacles(renderer);

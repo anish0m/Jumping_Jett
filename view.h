@@ -2,6 +2,8 @@
 #define JJGAME_VIEW_H
 
 #include "dimensions.h"
+#include "obstacle.h"
+#include "player.h"
 
 /* Functions to draw things */
 void drawBackgroundImage(SDL_Renderer *renderer);
@@ -20,7 +22,7 @@ void createAllViews(SDL_Renderer *renderer);
 void destroyAllViews();
 
 /* Functions to draw game things */
-void drawPlayer(SDL_Renderer *renderer, int percentX, int percentY);
-void drawObstacle(SDL_Renderer *renderer, bool isAtBottom, int percentX, int r, int g, int b);
+void drawPlayer(SDL_Renderer *renderer, Player* player);
+void drawObstacle(SDL_Renderer *renderer, Obstacle* obstacle);
 
 #endif //JJGAME_VIEW_H
