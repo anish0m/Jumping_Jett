@@ -4,23 +4,36 @@
 #include "view.h"
 #include "game.h"
 
+/*
+To draw anything, you have to do these
+    1) Set the boundaries (x, y, w, h)
+    2) Load it as a Surface object
+    3) Create a Texture object from the Surface 
+    4) Render the texture
+    5) Refresh the screen
+*/
+
 /********************************************************************/
 /* Background image */
-SDL_Rect backgroundImageBoundaries = { GAP, GAP, GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT };
+
+SDL_Rect backgroundImageBoundaries = {GAP, GAP, GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT};
 SDL_Surface *backgroundImg;
 SDL_Texture *backgroundImgTexture;
 
-void createBackgroundImage(SDL_Renderer* renderer) {
+void createBackgroundImage(SDL_Renderer *renderer)
+{
     printf("Create background image\n");
     backgroundImg = SDL_LoadBMP("../images/background.bmp");
     backgroundImgTexture = SDL_CreateTextureFromSurface(renderer, backgroundImg);
 }
 
-void drawBackgroundImage(SDL_Renderer* renderer) {
+void drawBackgroundImage(SDL_Renderer *renderer)
+{
     SDL_RenderCopy(renderer, backgroundImgTexture, NULL, &backgroundImageBoundaries);
 }
 
-void destroyBackgroundImage() {
+void destroyBackgroundImage()
+{
     printf("Destroying background image\n");
     SDL_DestroyTexture(backgroundImgTexture);
     SDL_FreeSurface(backgroundImg);
@@ -28,21 +41,24 @@ void destroyBackgroundImage() {
 
 /********************************************************************/
 /* Jett poster */
-SDL_Rect jettImageBoundaries = {JETT_X, GAP, JETT_WIDTH, JETT_HEIGHT };
+SDL_Rect jettImageBoundaries = {JETT_X, GAP, JETT_WIDTH, JETT_HEIGHT};
 SDL_Surface *jettImg;
 SDL_Texture *jettPosterTexture;
 
-void createJettPoster(SDL_Renderer* renderer) {
+void createJettPoster(SDL_Renderer *renderer)
+{
     printf("Creating jett poster\n");
     jettImg = SDL_LoadBMP("../images/Jett.bmp");
     jettPosterTexture = SDL_CreateTextureFromSurface(renderer, jettImg);
 }
 
-void drawJettPoster(SDL_Renderer* renderer) {
+void drawJettPoster(SDL_Renderer *renderer)
+{
     SDL_RenderCopy(renderer, jettPosterTexture, NULL, &jettImageBoundaries);
 }
 
-void destroyJettPoster() {
+void destroyJettPoster()
+{
     printf("Destroying jett poster\n");
     SDL_DestroyTexture(jettPosterTexture);
     SDL_FreeSurface(jettImg);
@@ -52,30 +68,35 @@ void destroyJettPoster() {
 /* App title and description */
 SDL_Color white = {255, 255, 255};
 
-SDL_Rect appTitleRect = { APP_TITLE_X, APP_TITLE_Y, APP_TITLE_WIDTH , APP_TITLE_HEIGHT };
-SDL_Texture* appTitleTexture;
-SDL_Surface* appTitleSurface;
+SDL_Rect appTitleRect = {APP_TITLE_X, APP_TITLE_Y, APP_TITLE_WIDTH, APP_TITLE_HEIGHT};
+SDL_Texture *appTitleTexture;
+SDL_Surface *appTitleSurface;
 
-SDL_Rect appSubtitleRect = { APP_SUBTITLE_X, APP_SUBTITLE_Y, APP_SUBTITLE_WIDTH , APP_SUBTITLE_HEIGHT };
-SDL_Texture* appSubtitleTexture;
-SDL_Surface* appSubtitleSurface;
+SDL_Rect appSubtitleRect = {APP_SUBTITLE_X, APP_SUBTITLE_Y, APP_SUBTITLE_WIDTH, APP_SUBTITLE_HEIGHT};
+SDL_Texture *appSubtitleTexture;
+SDL_Surface *appSubtitleSurface;
 
-SDL_Rect name1Rect = { NAME1_X, NAME1_Y, NAME1_WIDTH , NAME1_HEIGHT };
-SDL_Texture* name1Texture;
-SDL_Surface* name1Surface;
+SDL_Rect name1Rect = {NAME1_X, NAME1_Y, NAME1_WIDTH, NAME1_HEIGHT};
+SDL_Texture *name1Texture;
+SDL_Surface *name1Surface;
 
-SDL_Rect name2Rect = { NAME2_X, NAME2_Y, NAME2_WIDTH , NAME2_HEIGHT };
-SDL_Texture* name2Texture;
-SDL_Surface* name2Surface;
+SDL_Rect name2Rect = {NAME2_X, NAME2_Y, NAME2_WIDTH, NAME2_HEIGHT};
+SDL_Texture *name2Texture;
+SDL_Surface *name2Surface;
 
-SDL_Rect name3Rect = { NAME3_X, NAME3_Y, NAME3_WIDTH , NAME3_HEIGHT };
-SDL_Texture* name3Texture;
-SDL_Surface* name3Surface;
+SDL_Rect name3Rect = {NAME3_X, NAME3_Y, NAME3_WIDTH, NAME3_HEIGHT};
+SDL_Texture *name3Texture;
+SDL_Surface *name3Surface;
 
-void createAppDescription(SDL_Renderer* renderer) {
+void createAppDescription(SDL_Renderer *renderer)
+{
     printf("Loading font and creating app description\n");
 
-    TTF_Font* sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", APP_TITLE_HEIGHT * 3);
+    /*
+    To draw text, you have to use SDL_ttf library.
+    You have to load a font before creating surface and texture
+    */
+    TTF_Font *sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", APP_TITLE_HEIGHT * 3);
 
     appTitleSurface = TTF_RenderText_Solid(sans, "Jumping Jett", white);
     appTitleTexture = SDL_CreateTextureFromSurface(renderer, appTitleSurface);
@@ -97,7 +118,8 @@ void createAppDescription(SDL_Renderer* renderer) {
     TTF_CloseFont(sans);
 }
 
-void drawAppDescription(SDL_Renderer* renderer) {
+void drawAppDescription(SDL_Renderer *renderer)
+{
     SDL_RenderCopy(renderer, appTitleTexture, NULL, &appTitleRect);
     SDL_RenderCopy(renderer, appSubtitleTexture, NULL, &appSubtitleRect);
     SDL_RenderCopy(renderer, name1Texture, NULL, &name1Rect);
@@ -105,7 +127,8 @@ void drawAppDescription(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, name3Texture, NULL, &name3Rect);
 }
 
-void destroyAppDescription() {
+void destroyAppDescription()
+{
     printf("Destroying app description\n");
 
     SDL_DestroyTexture(appTitleTexture);
@@ -121,58 +144,75 @@ void destroyAppDescription() {
 /********************************************************************/
 /* Start Button */
 SDL_Color black = {0, 0, 0};
-SDL_Rect startButtonRect = { START_BUTTON_X, START_BUTTON_Y, START_BUTTON_WIDTH, START_BUTTON_HEIGHT };
-SDL_Rect startButtonTitleRect = { START_BUTTON_X + SMALL_GAP, START_BUTTON_Y + 5, START_BUTTON_WIDTH - SMALL_GAP - 5, START_BUTTON_HEIGHT - SMALL_GAP};
-SDL_Texture* startButtonTitleTexture;
-SDL_Surface* startButtonTitleSurface;
+SDL_Rect startButtonRect = {START_BUTTON_X, START_BUTTON_Y, START_BUTTON_WIDTH, START_BUTTON_HEIGHT};
+SDL_Rect startButtonTitleRect = {START_BUTTON_X + SMALL_GAP, START_BUTTON_Y + 5, START_BUTTON_WIDTH - SMALL_GAP - 5, START_BUTTON_HEIGHT - SMALL_GAP};
+SDL_Texture *startButtonTitleTexture;
+SDL_Surface *startButtonTitleSurface;
 
-void createStartButton(SDL_Renderer* renderer, char* text) {
+void createStartButton(SDL_Renderer *renderer, char *text)
+{
     printf("Creating start button\n");
-    TTF_Font* sans = TTF_OpenFont("../fonts/OpenSans-Bold.ttf", 32);
+    TTF_Font *sans = TTF_OpenFont("../fonts/OpenSans-Bold.ttf", 32);
     startButtonTitleSurface = TTF_RenderText_Solid(sans, text, black);
     startButtonTitleTexture = SDL_CreateTextureFromSurface(renderer, startButtonTitleSurface);
     TTF_CloseFont(sans);
 }
 
-void drawStartButton(SDL_Renderer* renderer) {
+void drawStartButton(SDL_Renderer *renderer)
+{
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderFillRect(renderer, &startButtonRect);
     SDL_RenderCopy(renderer, startButtonTitleTexture, NULL, &startButtonTitleRect);
 }
 
-void destroyStartButton() {
+void destroyStartButton()
+{
     printf("Destroying start button\n");
     SDL_DestroyTexture(startButtonTitleTexture);
     SDL_FreeSurface(startButtonTitleSurface);
 }
 
-bool isStartButtonClicked(SDL_Event mouseDownEvent) {
+bool isStartButtonClicked(SDL_Event mouseDownEvent)
+{
+    // Get the mouse position (x, y)
     auto x = mouseDownEvent.button.x;
     auto y = mouseDownEvent.button.y;
 
-    return x >= START_BUTTON_X && x <= (START_BUTTON_X + START_BUTTON_WIDTH)
-        && y >= START_BUTTON_Y && y <= (START_BUTTON_Y + START_BUTTON_HEIGHT);
+    // Check if mouse position is inside the start button's area
+    return x >= START_BUTTON_X && x <= (START_BUTTON_X + START_BUTTON_WIDTH) && y >= START_BUTTON_Y && y <= (START_BUTTON_Y + START_BUTTON_HEIGHT);
 }
 
-void recreateStartButton(SDL_Renderer* renderer, char* text) {
+void recreateStartButton(SDL_Renderer *renderer, char *text)
+{
     printf("Recreating the start button\n");
     destroyStartButton();
     createStartButton(renderer, text);
 }
 
-
 /***********************************************/
 SDL_Surface *playerImg;
 SDL_Texture *playerTexture;
 
-void createPlayerView(SDL_Renderer* renderer)
+void createPlayerView(SDL_Renderer *renderer)
 {
     printf("Creating player view\n");
     playerImg = SDL_LoadBMP("../images/player_default.bmp");
     playerTexture = SDL_CreateTextureFromSurface(renderer, playerImg);
 }
 
-void drawPlayer(SDL_Renderer* renderer, int percentX, int percentY)
+/**********************************************************************
+Draw a player at (x%, y%) position with respect to the game area.
+
+For an example, 
+
+If gameview is 300x200 and we have to draw the player at (25%, 50%),
+then player should be drawn at (75, 150).
+
+But (75, 150) should not be the players "Starting point". (75, 150) should be player's center of the body.
+
+If player's size is 40x30, we have to draw the player at ((75-20), (150-15)) point, or at (55, 135)
+*/
+void drawPlayer(SDL_Renderer *renderer, int percentX, int percentY)
 {
     int playerX = (GAME_VIEW_WIDTH * percentX) / 100;
     playerX -= (PLAYER_WIDTH / 2);
@@ -182,11 +222,10 @@ void drawPlayer(SDL_Renderer* renderer, int percentX, int percentY)
     playerY -= (PLAYER_HEIGHT / 2);
 
     SDL_Rect playerImageBoundaries = {
-            GAME_VIEW_X + playerX,
-            GAME_VIEW_Y + playerY,
-            PLAYER_WIDTH,
-            PLAYER_HEIGHT
-    };
+        GAME_VIEW_X + playerX,
+        GAME_VIEW_Y + playerY,
+        PLAYER_WIDTH,
+        PLAYER_HEIGHT};
     SDL_RenderCopy(renderer, playerTexture, NULL, &playerImageBoundaries);
 }
 
@@ -198,18 +237,19 @@ void destroyPlayerView()
 }
 
 /***************************************/
-void drawObstacle(SDL_Renderer* renderer, bool isAtBottom, int positionX, int r, int g, int b)
+void drawObstacle(SDL_Renderer *renderer, bool isAtBottom, int positionX, int r, int g, int b)
 {
     int x = positionX;
-    int y = isAtBottom ? GAME_VIEW_Y + GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT: GAME_VIEW_Y;
+    int y = isAtBottom ? GAME_VIEW_Y + GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT : GAME_VIEW_Y;
 
-    SDL_Rect obstacleRect = { x, y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT };
+    SDL_Rect obstacleRect = {x, y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT};
     SDL_SetRenderDrawColor(renderer, r, g, b, 0xFF);
     SDL_RenderFillRect(renderer, &obstacleRect);
 }
 
 /********************************************************************/
-void createAllViews(SDL_Renderer* renderer) {
+void createAllViews(SDL_Renderer *renderer)
+{
     createBackgroundImage(renderer);
     createJettPoster(renderer);
     createAppDescription(renderer);
@@ -217,7 +257,8 @@ void createAllViews(SDL_Renderer* renderer) {
     createPlayerView(renderer);
 }
 
-void destroyAllViews() {
+void destroyAllViews()
+{
     destroyBackgroundImage();
     destroyJettPoster();
     destroyAppDescription();

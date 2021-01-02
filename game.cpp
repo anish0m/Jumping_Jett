@@ -5,39 +5,41 @@
 
 struct GameState gameState;
 
-void initGame() {
+void initGame()
+{
     printf("Resetting Game State\n");
     gameState = {
-            false,
-            false,
-            false,
-            0,
-            NULL
-    };
+        false,
+        false,
+        false,
+        0,
+        NULL};
 }
 
-void drawAllObstacles(SDL_Renderer* renderer)
+void drawAllObstacles(SDL_Renderer *renderer)
 {
-    for(int i = 0; i < gameState.obstacles.size(); i++)
+    for (int i = 0; i < gameState.obstacles.size(); i++)
     {
-        Obstacle* obstacle = gameState.obstacles[i];
+        Obstacle *obstacle = gameState.obstacles[i];
         drawObstacle(renderer, obstacle->isAtBottom, obstacle->positionX, obstacle->colorR, obstacle->colorG, obstacle->colorB);
     }
 }
 
-DWORD WINAPI jettThread(void* _renderer)
+DWORD WINAPI jettThread(void *_renderer)
 {
-    Player* player = getPlayer();
+    Player *player = getPlayer();
 
     while (isGameRunning())
     {
         if (player->isJumping)
         {
+            // If jett is in the JUMP mode, make her go up by 1% in the Y axis every 10 milliseconds
             Sleep(10);
             player->rise();
         }
         else
         {
+            // Otherwise, make jett fall by 1% in the Y axis every 50 milliseconds
             Sleep(50);
             player->fall();
         }
@@ -47,9 +49,10 @@ DWORD WINAPI jettThread(void* _renderer)
             break;
         }
 
+        // Check if jett has collided with any obstacle
         if (gameState.obstacles.size() > 0)
         {
-            Obstacle* obstacle = gameState.obstacles[0];
+            Obstacle *obstacle = gameState.obstacles[0];
             if (player->hasCollisionWithObstacle(obstacle))
             {
                 player->isDead = true;
@@ -60,9 +63,9 @@ DWORD WINAPI jettThread(void* _renderer)
     return 0;
 }
 
-DWORD WINAPI obstacleCreatorThread(void* _renderer)
+DWORD WINAPI obstacleCreatorThread(void *_renderer)
 {
-    while(isGameRunning())
+    while (isGameRunning())
     {
         Sleep(2000);
         if (gameState.obstacles.size() < 3)
@@ -74,9 +77,9 @@ DWORD WINAPI obstacleCreatorThread(void* _renderer)
     return 0;
 }
 
-DWORD WINAPI obstacleMoverThread(void* _renderer)
+DWORD WINAPI obstacleMoverThread(void *_renderer)
 {
-    while(isGameRunning())
+    while (isGameRunning())
     {
         Sleep(10);
         vector<int> toRemove;
@@ -86,9 +89,10 @@ DWORD WINAPI obstacleMoverThread(void* _renderer)
             break;
         }
 
-        for(int i = 0; i < gameState.obstacles.size(); i++)
+        // Move all the obstacles left by 1 pixel
+        for (int i = 0; i < gameState.obstacles.size(); i++)
         {
-            Obstacle* obstacle = gameState.obstacles[i];
+            Obstacle *obstacle = gameState.obstacles[i];
             obstacle->moveLeft();
             if (obstacle->hasReachedLeft())
             {
@@ -96,6 +100,7 @@ DWORD WINAPI obstacleMoverThread(void* _renderer)
             }
         }
 
+        // Remove the obstacles that has reached the leftmost corner
         for (int i = 0; i < toRemove.size(); i++)
         {
             gameState.obstacles.erase(gameState.obstacles.begin() + toRemove[i]);
@@ -104,9 +109,9 @@ DWORD WINAPI obstacleMoverThread(void* _renderer)
     return 0;
 }
 
-DWORD WINAPI viewUpdaterThread(void* _renderer)
+DWORD WINAPI viewUpdaterThread(void *_renderer)
 {
-    SDL_Renderer* renderer = (SDL_Renderer*) _renderer;
+    SDL_Renderer *renderer = (SDL_Renderer *)_renderer;
 
     while (isGameRunning())
     {
@@ -114,27 +119,37 @@ DWORD WINAPI viewUpdaterThread(void* _renderer)
         if (gameState.player->isDead)
         {
             stopGame();
-            recreateStartButton(renderer, (char*)"START");
+            recreateStartButton(renderer, (char *)"START");
             drawStartButton(renderer);
             SDL_RenderPresent(renderer);
             break;
         }
+
+        // Draw the background image every moment before drawing jett or any obstacle
         drawBackgroundImage(renderer);
+
+        // Draw Jett at (x%, y%)
         drawPlayer(renderer, gameState.player->percentX, gameState.player->percentY);
+
+        // Draw obstacles
         drawAllObstacles(renderer);
+
+        // Refresh the game screen
         SDL_RenderPresent(renderer);
     }
     return 0;
 }
 
-void startGame() {
+void startGame()
+{
     printf("Starting the game\n");
     gameState.hasStarted = true;
     gameState.hasFinished = false;
     gameState.player = new Player();
 }
 
-void stopGame() {
+void stopGame()
+{
     printf("Stopping the game\n");
     gameState.hasStarted = true;
     gameState.hasFinished = true;
@@ -142,25 +157,28 @@ void stopGame() {
     gameState.obstacles.erase(gameState.obstacles.begin(), gameState.obstacles.end());
 }
 
-bool hasGameStarted() {
+bool hasGameStarted()
+{
     return gameState.hasStarted;
 }
 
-bool hasGameEnded() {
+bool hasGameEnded()
+{
     return gameState.hasFinished;
 }
 
-bool isGameRunning() {
+bool isGameRunning()
+{
     return hasGameStarted() && !hasGameEnded();
 }
 
-Player* getPlayer()
+Player *getPlayer()
 {
     return gameState.player;
 }
 
 void generateObstacle()
 {
-    Obstacle* obstacle = new Obstacle();
+    Obstacle *obstacle = new Obstacle();
     gameState.obstacles.push_back(obstacle);
 }

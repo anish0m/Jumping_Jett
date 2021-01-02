@@ -2,17 +2,20 @@
 #ifndef JJGAME_GAME_H
 #define JJGAME_GAME_H
 
-#define PLAYER_WIDTH 50
-#define PLAYER_HEIGHT 100
-
 #include "view.h"
 #include <windows.h>
 #include <vector>
 using namespace std;
 
+/* Player's body dimensions */
+#define PLAYER_WIDTH 50
+#define PLAYER_HEIGHT 100
+
+/* Obstacle's dimensions */
 #define OBSTACLE_WIDTH 30
 #define OBSTACLE_HEIGHT 100
 
+/*****************************************************/
 class Obstacle
 {
 public:
@@ -20,10 +23,14 @@ public:
     bool isAtBottom;
     int colorR, colorG, colorB;
 
+    /*
+    This is the "constructor" function. 
+    This is only called when the obstacle is created by "Obstacle* obstacle = new Obstacle()""
+    */
     Obstacle()
     {
         this->isAtBottom = (bool)(rand() % 2);
-        this->positionX = GAME_VIEW_WIDTH + GAME_VIEW_X - OBSTACLE_WIDTH;
+        this->positionX = GAME_VIEW_WIDTH + GAME_VIEW_X - OBSTACLE_WIDTH; // it should start at the rightmost corner with a little gap to fit it's width
         this->colorR = rand() % 255;
         this->colorG = rand() % 255;
         this->colorB = rand() % 255;
@@ -40,7 +47,9 @@ public:
     }
 };
 
-class Player {
+/***************************************************/
+class Player
+{
 public:
     int percentX;
     int percentY;
@@ -48,7 +57,8 @@ public:
     int jumpEnergy;
     bool isDead;
 
-    Player() {
+    Player()
+    {
         this->percentX = 20;
         this->percentY = 50;
         this->isJumping = false;
@@ -66,7 +76,8 @@ public:
         return this->percentY <= 12;
     }
 
-    void fall() {
+    void fall()
+    {
         this->percentY++;
         if (this->hasTouchedGround())
         {
@@ -98,7 +109,7 @@ public:
         }
     }
 
-    bool hasCollisionWithObstacle(Obstacle* obstacle)
+    bool hasCollisionWithObstacle(Obstacle *obstacle)
     {
         int tolerance = 5;
         int playerX = (this->percentX * GAME_VIEW_WIDTH / 100) + GAME_VIEW_X - (PLAYER_WIDTH/2);
@@ -115,49 +126,51 @@ public:
 
         if (obstacle->isAtBottom)
         {
+            // Check if player's leg has touched the obstacle's top surface
             int playerLegY = (this->percentY * GAME_VIEW_HEIGHT / 100) + (PLAYER_HEIGHT / 2);
             return playerLegY - tolerance > GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT;
         }
         else
         {
+            // Check if player's head has touched the obstacle's bottom surface
             int playerHeadY = (this->percentY * GAME_VIEW_HEIGHT / 100) - (PLAYER_HEIGHT / 2);
             return playerHeadY + tolerance < OBSTACLE_HEIGHT;
         }
     }
 };
 
-struct GameState {
+/*
+To represent a "moment" in the game, we need to create a game state with some variables that clearly
+represent the game. As the time passes, we will modify these variables and take decisions based on them.
+*/
+struct GameState
+{
     bool hasStarted;
     bool hasFinished;
     bool isPaused;
 
     int score;
 
-    Player* player;
-    vector<Obstacle*>obstacles;
+    Player *player;
+    vector<Obstacle *> obstacles;
 };
 
-DWORD WINAPI jettThread(void* _renderer);
-
-DWORD WINAPI obstacleCreatorThread(void* _renderer);
-
-DWORD WINAPI obstacleMoverThread(void* _renderer);
-
-DWORD WINAPI viewUpdaterThread(void* _renderer);
+/* Functions that run only inside a thread */
+DWORD WINAPI jettThread(void *_renderer);
+DWORD WINAPI obstacleCreatorThread(void *_renderer);
+DWORD WINAPI obstacleMoverThread(void *_renderer);
+DWORD WINAPI viewUpdaterThread(void *_renderer);
 
 void initGame();
-
 void startGame();
-
 void stopGame();
 
 bool hasGameEnded();
-
 bool isGameRunning();
-
 bool hasGameStarted();
 
-Player* getPlayer();
+/* Get the pointer to the jett player */
+Player *getPlayer();
 
 void generateObstacle();
 
