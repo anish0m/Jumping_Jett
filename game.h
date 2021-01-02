@@ -100,32 +100,28 @@ public:
 
     bool hasCollisionWithObstacle(Obstacle* obstacle)
     {
-        int playerMidX = (this->percentX * GAME_VIEW_WIDTH / 100);
-        int obstacleMidX = obstacle->positionX - (OBSTACLE_WIDTH/2);
+        int tolerance = 5;
+        int playerX = (this->percentX * GAME_VIEW_WIDTH / 100) + GAME_VIEW_X - (PLAYER_WIDTH/2);
 
-        int playerToObstacleDistance = abs(playerMidX - obstacleMidX) ;
+        if (obstacle->positionX + OBSTACLE_WIDTH - tolerance < playerX)
+        {
+            return false;
+        }
 
-        int collisionDistance = (PLAYER_WIDTH + OBSTACLE_WIDTH) / 2;
-
-        if (playerToObstacleDistance > collisionDistance) return false;
+        if (playerX + PLAYER_WIDTH - tolerance < obstacle->positionX)
+        {
+            return false;
+        }
 
         if (obstacle->isAtBottom)
         {
             int playerLegY = (this->percentY * GAME_VIEW_HEIGHT / 100) + (PLAYER_HEIGHT / 2);
-            if (playerLegY >= GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT)
-            {
-                printf("Down COLLISSION %d %d\n", playerLegY, GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT);
-            }
-            return playerLegY >= GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT;
+            return playerLegY - tolerance > GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT;
         }
         else
         {
             int playerHeadY = (this->percentY * GAME_VIEW_HEIGHT / 100) - (PLAYER_HEIGHT / 2);
-            if (playerHeadY <= OBSTACLE_HEIGHT)
-            {
-                printf("Up COLLISSION %d %d\n", playerHeadY, OBSTACLE_HEIGHT);
-            }
-            return playerHeadY <= OBSTACLE_HEIGHT;
+            return playerHeadY + tolerance < OBSTACLE_HEIGHT;
         }
     }
 };
