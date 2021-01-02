@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include "dimensions.h"
 #include "view.h"
 #include "game.h"
 #include <windows.h>

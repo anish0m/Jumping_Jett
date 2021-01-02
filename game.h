@@ -5,15 +5,9 @@
 #include "view.h"
 #include <windows.h>
 #include <vector>
+#include "dimensions.h"
 using namespace std;
 
-/* Player's body dimensions */
-#define PLAYER_WIDTH 50
-#define PLAYER_HEIGHT 100
-
-/* Obstacle's dimensions */
-#define OBSTACLE_WIDTH 30
-#define OBSTACLE_HEIGHT 100
 
 /*****************************************************/
 class Obstacle
