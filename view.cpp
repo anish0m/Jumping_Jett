@@ -190,14 +190,17 @@ void recreateStartButton(SDL_Renderer *renderer, char *text)
 }
 
 /***********************************************/
-SDL_Surface *playerImg;
-SDL_Texture *playerTexture;
+SDL_Surface *playerImg, *deadPlayerImg;
+SDL_Texture *playerTexture, *deadPlayerTexture;
 
 void createPlayerView(SDL_Renderer *renderer)
 {
     printf("Creating player view\n");
     playerImg = SDL_LoadBMP("../images/player_default.bmp");
     playerTexture = SDL_CreateTextureFromSurface(renderer, playerImg);
+
+    deadPlayerImg = SDL_LoadBMP("../images/player_dead.bmp");
+    deadPlayerTexture = SDL_CreateTextureFromSurface(renderer, deadPlayerImg);
 }
 
 /**********************************************************************
@@ -226,7 +229,14 @@ void drawPlayer(SDL_Renderer *renderer, Player* player)
         GAME_VIEW_Y + playerY,
         PLAYER_WIDTH,
         PLAYER_HEIGHT};
-    SDL_RenderCopy(renderer, playerTexture, NULL, &playerImageBoundaries);
+
+    if (player->isDead)
+    {
+        SDL_RenderCopy(renderer, deadPlayerTexture, NULL, &playerImageBoundaries);
+    }
+    else {
+        SDL_RenderCopy(renderer, playerTexture, NULL, &playerImageBoundaries);
+    }
 }
 
 void destroyPlayerView()
@@ -234,6 +244,8 @@ void destroyPlayerView()
     printf("Destroying player view\n");
     SDL_DestroyTexture(playerTexture);
     SDL_FreeSurface(playerImg);
+    SDL_DestroyTexture(deadPlayerTexture);
+    SDL_FreeSurface(deadPlayerImg);
 }
 
 /***************************************/

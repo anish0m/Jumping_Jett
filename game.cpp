@@ -116,14 +116,6 @@ DWORD WINAPI viewUpdaterThread(void *_renderer)
     while (isGameRunning())
     {
         Sleep(10);
-        if (gameState.player->isDead)
-        {
-            stopGame();
-            recreateStartButton(renderer, (char *)"START");
-            drawStartButton(renderer);
-            SDL_RenderPresent(renderer);
-            break;
-        }
 
         // Draw the background image every moment before drawing jett or any obstacle
         drawBackgroundImage(renderer);
@@ -136,6 +128,21 @@ DWORD WINAPI viewUpdaterThread(void *_renderer)
 
         // Refresh the game screen
         SDL_RenderPresent(renderer);
+
+        if (gameState.player->isDead)
+        {
+            recreateStartButton(renderer, (char *)"START");
+            drawStartButton(renderer);
+
+            drawBackgroundImage(renderer);
+            drawAllObstacles(renderer);
+            drawPlayer(renderer, gameState.player);
+
+            SDL_RenderPresent(renderer);
+
+            stopGame();
+            break;
+        }
     }
     return 0;
 }
