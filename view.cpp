@@ -260,6 +260,38 @@ void drawObstacle(SDL_Renderer *renderer, Obstacle* obstacle)
 }
 
 /********************************************************************/
+/* Game Over */
+SDL_Color Red = {255, 0, 0};
+
+SDL_Rect gameOverRect = {GO_X, GO_Y, GO_WIDTH, GO_HEIGHT};
+SDL_Texture *gameOverTexture;
+SDL_Surface *gameOverSurface;
+
+void createGameOver(SDL_Renderer *renderer)
+{
+    printf("Game Over !!!\n");
+    TTF_Font *sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", GAP * 3);
+
+    gameOverSurface = TTF_RenderText_Solid(sans, "Game Over", Red);
+    gameOverTexture = SDL_CreateTextureFromSurface(renderer, gameOverSurface);
+
+    TTF_CloseFont(sans);
+}
+
+void drawGameOver(SDL_Renderer *renderer)
+{
+    SDL_RenderCopy(renderer, gameOverTexture, NULL, &gameOverRect);
+}
+
+void destroyGameOver()
+{
+    printf("Destroying Game Over\n");
+
+    SDL_DestroyTexture(gameOverTexture);
+    SDL_FreeSurface(gameOverSurface);
+}
+
+/********************************************************************/
 void createAllViews(SDL_Renderer *renderer)
 {
     createBackgroundImage(renderer);

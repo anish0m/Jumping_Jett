@@ -10,12 +10,17 @@ void drawBackgroundImage(SDL_Renderer *renderer);
 void drawJettPoster(SDL_Renderer *renderer);
 void drawAppDescription(SDL_Renderer *renderer);
 void drawStartButton(SDL_Renderer *renderer);
+void drawGameOver(SDL_Renderer *renderer);
 
 /* Checks if the mouse has been clicked inside the button area */
 bool isStartButtonClicked(SDL_Event mouseDownEvent);
 
 /* Recreate start button (needed everytime you want to update it's text) */
 void recreateStartButton(SDL_Renderer *renderer, char *text);
+
+/**/
+void createGameOver(SDL_Renderer *renderer);
+void destroyGameOver();
 
 /**/
 void createAllViews(SDL_Renderer *renderer);

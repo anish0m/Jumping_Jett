@@ -3,6 +3,8 @@
 #include "game.h"
 #include <windows.h>
 
+long long int countObstacle = 0;
+
 struct GameState gameState;
 
 void initGame()
@@ -72,6 +74,8 @@ DWORD WINAPI obstacleCreatorThread(void *_renderer)
         {
             printf("Creating obstacle\n");
             generateObstacle();
+
+            countObstacle += 100;
         }
     }
     return 0;
@@ -131,6 +135,9 @@ DWORD WINAPI viewUpdaterThread(void *_renderer)
 
         if (gameState.player->isDead)
         {
+            createGameOver(renderer);
+            drawGameOver(renderer);
+
             recreateStartButton(renderer, (char *)"START");
             drawStartButton(renderer);
 
@@ -149,6 +156,7 @@ DWORD WINAPI viewUpdaterThread(void *_renderer)
 
 void startGame()
 {
+    destroyGameOver();
     printf("Starting the game\n");
     gameState.hasStarted = true;
     gameState.hasFinished = false;
