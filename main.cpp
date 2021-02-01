@@ -81,6 +81,7 @@ int main(int argc, char *argv[])
     drawJettPoster(renderer);
     drawAppDescription(renderer);
     drawStartButton(renderer);
+    drawScoreText(renderer);
 
     /*
     Drawings will not be visible until you call this function. It means "Refresh"

@@ -189,6 +189,36 @@ void recreateStartButton(SDL_Renderer *renderer, char *text)
     createStartButton(renderer, text);
 }
 
+/* Score Block */
+
+SDL_Rect scoreTextRect = {SCORE_X, SCORE_Y, SCORE_WIDTH, SCORE_HEIGHT};
+SDL_Texture *scoreTextTexture;
+SDL_Surface *scoreTextSurface;
+
+void createScoreText(SDL_Renderer *renderer)
+{
+    printf("Loading font and creating Score\n");
+    TTF_Font *sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", SCORE_HEIGHT);
+
+    scoreTextSurface = TTF_RenderText_Solid(sans, "Score :", white);
+    scoreTextTexture = SDL_CreateTextureFromSurface(renderer, scoreTextSurface);
+
+    TTF_CloseFont(sans);
+}
+
+void drawScoreText(SDL_Renderer *renderer)
+{
+    SDL_RenderCopy(renderer, scoreTextTexture, NULL, &scoreTextRect);
+}
+
+void destroyScoreText()
+{
+    printf("Destroying score text\n");
+
+    SDL_DestroyTexture(scoreTextTexture);
+    SDL_FreeSurface(scoreTextSurface);
+}
+
 /***********************************************/
 SDL_Surface *playerImg, *deadPlayerImg;
 SDL_Texture *playerTexture, *deadPlayerTexture;
@@ -298,6 +328,7 @@ void createAllViews(SDL_Renderer *renderer)
     createJettPoster(renderer);
     createAppDescription(renderer);
     createStartButton(renderer, "START");
+    createScoreText(renderer);
     createPlayerView(renderer);
 }
 
@@ -307,5 +338,6 @@ void destroyAllViews()
     destroyJettPoster();
     destroyAppDescription();
     destroyStartButton();
+    destroyScoreText();
     destroyPlayerView();
 }

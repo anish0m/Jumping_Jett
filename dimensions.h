@@ -68,4 +68,10 @@
 #define GO_WIDTH (GAP * 6)
 #define GO_HEIGHT GAP
 
+/* Score dimensions */
+#define SCORE_X GAP
+#define SCORE_Y SMALL_GAP
+#define SCORE_WIDTH START_BUTTON_WIDTH
+#define SCORE_HEIGHT START_BUTTON_HEIGHT
+
 #endif //JJGAME_DIMENSIONS_H

@@ -10,6 +10,7 @@ void drawBackgroundImage(SDL_Renderer *renderer);
 void drawJettPoster(SDL_Renderer *renderer);
 void drawAppDescription(SDL_Renderer *renderer);
 void drawStartButton(SDL_Renderer *renderer);
+void drawScoreText(SDL_Renderer *renderer);
 void drawGameOver(SDL_Renderer *renderer);
 
 /* Checks if the mouse has been clicked inside the button area */
