@@ -35,6 +35,7 @@ public:
     void fall()
     {
         this->percentY++;
+
         if (this->hasTouchedGround())
         {
             this->isDead = true;
@@ -58,6 +59,7 @@ public:
             {
                 this->isDead = true;
             }
+
             if (this->jumpEnergy == 0)
             {
                 this->isJumping = false;
@@ -82,13 +84,13 @@ public:
 
         if (obstacle->isAtBottom)
         {
-            // Check if player's leg has touched the obstacle's top surface
+            // Checking if player's leg has touched the obstacle's top surface
             int playerLegY = (this->percentY * GAME_VIEW_HEIGHT / 100) + (PLAYER_HEIGHT / 2);
             return playerLegY - tolerance > GAME_VIEW_HEIGHT - OBSTACLE_HEIGHT;
         }
         else
         {
-            // Check if player's head has touched the obstacle's bottom surface
+            // Checking if player's head has touched the obstacle's bottom surface
             int playerHeadY = (this->percentY * GAME_VIEW_HEIGHT / 100) - (PLAYER_HEIGHT / 2);
             return playerHeadY + tolerance < OBSTACLE_HEIGHT;
         }

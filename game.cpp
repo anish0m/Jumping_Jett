@@ -1,15 +1,14 @@
-#include <stdio.h>
+#include <bits/stdc++.h>
 #include <SDL.h>
 #include "game.h"
 #include <windows.h>
-
-long long int countObstacle = 0;
 
 struct GameState gameState;
 
 void initGame()
 {
     printf("Resetting Game State\n");
+
     gameState = {
         false,
         false,
@@ -70,12 +69,11 @@ DWORD WINAPI obstacleCreatorThread(void *_renderer)
     while (isGameRunning())
     {
         Sleep(2000);
+
         if (gameState.obstacles.size() < 3)
         {
             printf("Creating obstacle\n");
             generateObstacle();
-
-            countObstacle += 100;
         }
     }
     return 0;
@@ -88,6 +86,7 @@ DWORD WINAPI obstacleMoverThread(void *_renderer)
     while (isGameRunning())
     {
         Sleep(10);
+
         vector<int> toRemove;
 
         if (gameState.player->isDead)
@@ -100,6 +99,7 @@ DWORD WINAPI obstacleMoverThread(void *_renderer)
         {
             Obstacle *obstacle = gameState.obstacles[i];
             obstacle->moveLeft();
+
             if (obstacle->hasReachedLeft())
             {
                 toRemove.push_back(i);
@@ -110,9 +110,11 @@ DWORD WINAPI obstacleMoverThread(void *_renderer)
         for (int i = 0; i < toRemove.size(); i++)
         {
             gameState.obstacles.erase(gameState.obstacles.begin() + toRemove[i]);
-            gameState.score++;
-            calculateScoreValue(gameState.score);
-            recreateScoreValue(renderer);
+
+            //Calculating score and updating them
+            gameState.score += 10;
+
+            recreateScoreValue(renderer, gameState.score);
             drawScoreValue(renderer);
         }
     }
@@ -127,16 +129,16 @@ DWORD WINAPI viewUpdaterThread(void *_renderer)
     {
         Sleep(10);
 
-        // Draw the background image every moment before drawing jett or any obstacle
+        // Drawing the background image every moment before drawing jett or any obstacle
         drawBackgroundImage(renderer);
 
-        // Draw Jett at (x%, y%)
+        // Drawing Jett at (x%, y%)
         drawPlayer(renderer, gameState.player);
 
-        // Draw obstacles
+        // Drawing obstacles
         drawAllObstacles(renderer);
 
-        // Refresh the game screen
+        // Refreshing the game screen
         SDL_RenderPresent(renderer);
 
         if (gameState.player->isDead)
@@ -163,7 +165,9 @@ DWORD WINAPI viewUpdaterThread(void *_renderer)
 void startGame()
 {
     destroyGameOver();
+
     printf("Starting the game\n");
+
     gameState.hasStarted = true;
     gameState.hasFinished = false;
     gameState.player = new Player();
@@ -172,6 +176,7 @@ void startGame()
 void stopGame()
 {
     printf("Stopping the game\n");
+
     gameState.hasStarted = true;
     gameState.hasFinished = true;
     delete gameState.player;

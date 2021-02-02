@@ -1,4 +1,3 @@
-
 #ifndef JJGAME_GAME_H
 #define JJGAME_GAME_H
 
@@ -11,9 +10,11 @@
 using namespace std;
 
 /*
-To represent a "moment" in the game, we need to create a game state with some variables that clearly
-represent the game. As the time passes, we will modify these variables and take decisions based on them.
+To represent a "moment" in the game,
+we need to create a game state with some variables that clearly represent the game.
+As the time passes, we will modify these variables and take decisions based on them.
 */
+
 struct GameState
 {
     bool hasStarted;
@@ -40,7 +41,7 @@ bool hasGameEnded();
 bool isGameRunning();
 bool hasGameStarted();
 
-/* Get the pointer to the jett player */
+/* Getting the pointer to the jett player */
 Player *getPlayer();
 
 void generateObstacle();

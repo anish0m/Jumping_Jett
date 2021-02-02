@@ -1,6 +1,7 @@
 #ifndef JJGAME_OBSTACLE_H
 #define JJGAME_OBSTACLE_H
 
+#include <bits/stdc++.h>
 #include <stdlib.h>
 #include "dimensions.h"
 
@@ -13,8 +14,9 @@ public:
 
     /*
     This is the "constructor" function.
-    This is only called when the obstacle is created by "Obstacle* obstacle = new Obstacle()""
+    We're gonna call it only when the obstacle is created by "Obstacle* obstacle = new Obstacle()""
     */
+
     Obstacle()
     {
         this->isAtBottom = (bool)(rand() % 2);

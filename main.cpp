@@ -1,10 +1,10 @@
-#include <stdio.h>
+#include <bits/stdc++.h>
+#include <windows.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include "dimensions.h"
 #include "view.h"
 #include "game.h"
-#include <windows.h>
 
 using namespace std;
 
@@ -14,28 +14,29 @@ int main(int argc, char *argv[])
     (void)argc;
     (void)argv;
 
-    // Initialize SDL functionality
+    // Initializing SDL functionality
     SDL_Init(SDL_INIT_VIDEO);
 
-    // Initialize SDL_ttf functionality
+    // Initializing SDL_ttf functionality
     TTF_Init();
 
-    // Create the window of the app
+    // Creating the window of the app
     SDL_Window *window = SDL_CreateWindow("Jumping Jett",
                                           SDL_WINDOWPOS_UNDEFINED,
                                           SDL_WINDOWPOS_UNDEFINED,
-                                          SCREEN_WIDTH, SCREEN_HEIGHT, // dimensions of the window
+                                          SCREEN_WIDTH, SCREEN_HEIGHT,
                                           SDL_WINDOW_SHOWN);
 
     /*
-    Renderer is created. A renderer can draw things on the window. That's why it is useful
+    Renderer is created to draw things on the window.
     */
+
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    printf("SDL Window created\n");
+    printf("SDL Window created.\n");
 
-    /*****************************************************************************************
-    We have to create 4 threads:
+    /*
+    Creating 4 threads:
         1) jett Thread:
             a) Makes Jett move upward or downward
             b) Checks if jett has crashed against any obstacle
@@ -47,36 +48,39 @@ int main(int argc, char *argv[])
         3) Obstacle mover thread
             a) Moves obstacle left through X axis
             b) Deletes an obstacle if it has reached the leftmost corner
+            c) Counts deleted obstacles to generate score
+        4) View Updater Thread
+            a) Deals with all the drawing updates while the game is still running
     
-    To create a thread from <windows.h>, we need an ID and a Handle. Thats why we have 4 IDs and
-    4 handles bellow, for each of the above mentioned thread. 
+    To create a thread from <windows.h>, we need an ID and a Handle.
+    4 IDs and 4 handles bellow, for each of the above mentioned thread.
     */
+
     DWORD jettThreadId, obstacleCreatorThreadId, obstacleMoverThreadId, viewUpdaterThreadId;
     HANDLE jettThreadHandle, obstacleCreatorThreadHandle, obstacleMoverThreadHandle, viewUpdaterThreadHandle;
 
-    /* Initialize default state of the game. */
+    //Initializing default state of the game.
     initGame();
     printf("Game initialized successfully\n");
 
     /*
-    Create all the views necessary for the UI
-        1. Create the background image
-        2. Create the Jett's poster
-        3. Create texts (App name, Team names etc)
-        4. Create the start button
+    Creating all the views necessary for the UI
+        1. The background image
+        2. The Jett's poster
+        3. Texts (App name, Team names etc)
+        4. The start button
+        5. Initial Score
         5. Create the Jett player
-    
-    Important note: 
-    "Create" DOES NOT mean "Draw". It just means loading the necessary things before drawing any object.
     */
+
     createAllViews(renderer);
     printf("Game views created\n");
 
-    // Set background color Black
+    // Setting background color Pale Black
     SDL_SetRenderDrawColor(renderer, 35, 43, 43, 0xFF);
     SDL_RenderClear(renderer);
 
-    // Draw all the things that we have created
+    // Drawing all the things that we have created
     drawBackgroundImage(renderer);
     drawJettPoster(renderer);
     drawAppDescription(renderer);
@@ -84,9 +88,6 @@ int main(int argc, char *argv[])
     drawScoreText(renderer);
     drawScoreValue(renderer);
 
-    /*
-    Drawings will not be visible until you call this function. It means "Refresh"
-    */
     SDL_RenderPresent(renderer);
 
     bool quit = false;
@@ -94,7 +95,7 @@ int main(int argc, char *argv[])
     {
         SDL_Event e;
 
-        // Wait for the next available event
+        // Waiting for the next available event
         SDL_WaitEvent(&e);
 
         // User requests quit
@@ -103,7 +104,7 @@ int main(int argc, char *argv[])
             quit = true;
         }
 
-        // User clicks with the mouse anywhere in the app
+        // Clicking mouse
         else if (e.type == SDL_MOUSEBUTTONDOWN)
         {
             // When user clicks inside the button area
@@ -113,22 +114,21 @@ int main(int argc, char *argv[])
 
                 if (isGameRunning())
                 {
-                    // STOP has been clicked. So, kill all the 4 threads
+                    // STOP has been clicked. Killing all the 4 threads
                     TerminateThread(jettThreadHandle, 0);
                     TerminateThread(obstacleCreatorThreadHandle, 0);
                     TerminateThread(obstacleMoverThreadHandle, 0);
                     TerminateThread(viewUpdaterThreadHandle, 0);
 
-                    // Update game state variables
+                    // Updating game state variables
                     stopGame();
 
-                    // Update start button text as "START"
+                    // Update=ing start button text as "START"
                     recreateStartButton(renderer, (char *)"START");
                     drawStartButton(renderer);
                 }
                 else
                 {
-                    // Modify game state variables to indicate that game has started
                     startGame();
 
                     // Creating all the 4 threads
@@ -164,27 +164,27 @@ int main(int argc, char *argv[])
                         0,
                         &viewUpdaterThreadId);
 
-                    // Update the start button as "STOP"
+                    // Updating the start button as "STOP"
                     recreateStartButton(renderer, (char *)"STOP");
                     drawStartButton(renderer);
                 }
 
-                // Update the screen
+                // Updating the screen
                 SDL_RenderPresent(renderer);
             }
         }
 
-        // User has pressed any key
+        // Pressing any key
         else if (e.type == SDL_KEYDOWN)
         {
-            // User has pressed SPACE bar
+            // When the pressed key is SPACE bar
             if (e.key.keysym.sym == SDLK_SPACE)
             {
                 if (isGameRunning())
                 {
                     printf("Space bar pressed\n");
 
-                    // Get the pointer to the jett player and set it as "jump mode"
+                    // Getting the pointer to the class "Player" and setting it as "jump mode"
                     Player *player = getPlayer();
                     player->startJump();
                 }
@@ -192,16 +192,16 @@ int main(int argc, char *argv[])
         }
     }
 
-    // When the program is ending, destroy all the threads and free their memory
+    // Destroying all the threads to free their memory as the program is ends.
     CloseHandle(jettThreadHandle);
     CloseHandle(obstacleCreatorThreadHandle);
     CloseHandle(obstacleMoverThreadHandle);
     CloseHandle(viewUpdaterThreadHandle);
 
-    // Free all the memory that the view elements took when creating
+    // Destroying all the view-related elements
     destroyAllViews();
 
-    // Free all the memory the SDL library took
+    // Finally we free all the memory the SDL library took
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

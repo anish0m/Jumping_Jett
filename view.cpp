@@ -1,19 +1,24 @@
+#include <bits/stdc++.h>
 #include <SDL.h>
-#include <stdio.h>
 #include <SDL_ttf.h>
 #include "view.h"
 #include "game.h"
 
+/*
+    As we can't direct draw the score, We'll convert it to string.
+*/
+
 char points[11] = "0000000000";
 
 /*
-To draw anything, you have to do these
+To draw anything.....
     1) Set the boundaries (x, y, w, h)
     2) Load it as a Surface object
     3) Create a Texture object from the Surface 
     4) Render the texture
     5) Refresh the screen
 */
+
 
 /********************************************************************/
 /* Background image */
@@ -25,6 +30,7 @@ SDL_Texture *backgroundImgTexture;
 void createBackgroundImage(SDL_Renderer *renderer)
 {
     printf("Create background image\n");
+
     backgroundImg = SDL_LoadBMP("../images/background.bmp");
     backgroundImgTexture = SDL_CreateTextureFromSurface(renderer, backgroundImg);
 }
@@ -37,12 +43,15 @@ void drawBackgroundImage(SDL_Renderer *renderer)
 void destroyBackgroundImage()
 {
     printf("Destroying background image\n");
+
     SDL_DestroyTexture(backgroundImgTexture);
     SDL_FreeSurface(backgroundImg);
 }
 
+
 /********************************************************************/
 /* Jett poster */
+
 SDL_Rect jettImageBoundaries = {JETT_X, GAP, JETT_WIDTH, JETT_HEIGHT};
 SDL_Surface *jettImg;
 SDL_Texture *jettPosterTexture;
@@ -50,6 +59,7 @@ SDL_Texture *jettPosterTexture;
 void createJettPoster(SDL_Renderer *renderer)
 {
     printf("Creating jett poster\n");
+
     jettImg = SDL_LoadBMP("../images/Jett.bmp");
     jettPosterTexture = SDL_CreateTextureFromSurface(renderer, jettImg);
 }
@@ -62,9 +72,11 @@ void drawJettPoster(SDL_Renderer *renderer)
 void destroyJettPoster()
 {
     printf("Destroying jett poster\n");
+
     SDL_DestroyTexture(jettPosterTexture);
     SDL_FreeSurface(jettImg);
 }
+
 
 /********************************************************************/
 /* App title and description */
@@ -98,6 +110,7 @@ void createAppDescription(SDL_Renderer *renderer)
     To draw text, you have to use SDL_ttf library.
     You have to load a font before creating surface and texture
     */
+
     TTF_Font *sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", APP_TITLE_HEIGHT * 3);
 
     appTitleSurface = TTF_RenderText_Solid(sans, "Jumping Jett", white);
@@ -143,20 +156,25 @@ void destroyAppDescription()
     SDL_FreeSurface(name1Surface);
 }
 
+
 /********************************************************************/
 /* Start Button */
+
 SDL_Color black = {0, 0, 0};
 SDL_Rect startButtonRect = {START_BUTTON_X, START_BUTTON_Y, START_BUTTON_WIDTH, START_BUTTON_HEIGHT};
 SDL_Rect startButtonTitleRect = {START_BUTTON_X + SMALL_GAP, START_BUTTON_Y + 5, START_BUTTON_WIDTH - SMALL_GAP - 5, START_BUTTON_HEIGHT - SMALL_GAP};
+
 SDL_Texture *startButtonTitleTexture;
 SDL_Surface *startButtonTitleSurface;
 
 void createStartButton(SDL_Renderer *renderer, char *text)
 {
     printf("Creating start button\n");
+
     TTF_Font *sans = TTF_OpenFont("../fonts/OpenSans-Bold.ttf", 32);
     startButtonTitleSurface = TTF_RenderText_Solid(sans, text, black);
     startButtonTitleTexture = SDL_CreateTextureFromSurface(renderer, startButtonTitleSurface);
+
     TTF_CloseFont(sans);
 }
 
@@ -170,27 +188,30 @@ void drawStartButton(SDL_Renderer *renderer)
 void destroyStartButton()
 {
     printf("Destroying start button\n");
+
     SDL_DestroyTexture(startButtonTitleTexture);
     SDL_FreeSurface(startButtonTitleSurface);
 }
 
 bool isStartButtonClicked(SDL_Event mouseDownEvent)
 {
-    // Get the mouse position (x, y)
+    // Getting the mouse position (x, y)
     auto x = mouseDownEvent.button.x;
     auto y = mouseDownEvent.button.y;
 
-    // Check if mouse position is inside the start button's area
+    // Checking if mouse position is inside the start button's area
     return x >= START_BUTTON_X && x <= (START_BUTTON_X + START_BUTTON_WIDTH) && y >= START_BUTTON_Y && y <= (START_BUTTON_Y + START_BUTTON_HEIGHT);
 }
 
 void recreateStartButton(SDL_Renderer *renderer, char *text)
 {
     printf("Recreating the start button\n");
+
     destroyStartButton();
     createStartButton(renderer, text);
 }
 
+/********************************************************************/
 /* Score Block */
 
 SDL_Rect scoreTextRect = {SCORE_X, SCORE_Y, SCORE_WIDTH, SCORE_HEIGHT};
@@ -204,6 +225,7 @@ SDL_Surface *scoreValueSurface;
 void createScoreText(SDL_Renderer *renderer)
 {
     printf("Loading font and creating Score\n");
+
     TTF_Font *sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", SCORE_HEIGHT);
 
     scoreTextSurface = TTF_RenderText_Solid(sans, "Score :", white);
@@ -219,6 +241,8 @@ void drawScoreText(SDL_Renderer *renderer)
 
 void calculateScoreValue(int score)
 {
+    //A small C++ code to convert int to string
+
     printf("Calculating Score\n");
 
     int index = 9;
@@ -226,7 +250,7 @@ void calculateScoreValue(int score)
 
     char temp;
 
-    while(score)
+    while (score)
     {
         rem = (score % 10);
         temp = rem + '0';
@@ -244,6 +268,7 @@ void calculateScoreValue(int score)
 void createScoreValue(SDL_Renderer *renderer)
 {
     printf("Creating Present Score\n");
+
     TTF_Font *sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", SCORE_HEIGHT);
 
     scoreValueSurface = TTF_RenderText_Solid(sans, points, white);
@@ -254,6 +279,17 @@ void createScoreValue(SDL_Renderer *renderer)
 
 void drawScoreValue(SDL_Renderer *renderer)
 {
+    printf("Present score is : %s\n", points);
+
+    SDL_SetRenderDrawColor(renderer, 35, 43, 43, 0xFF);
+    SDL_RenderFillRect(renderer, &scoreValueRect);
+
+    /*
+            The above two lines are not to draw the score.
+            It'll generate a Pale black rectangle with the same coordinates as scoreValueRect
+            It avoids the overwriting of scores
+     */
+
     SDL_RenderCopy(renderer, scoreValueTexture, NULL, &scoreValueRect);
 }
 
@@ -265,10 +301,12 @@ void destroyScoreValue()
     SDL_FreeSurface(scoreValueSurface);
 }
 
-void recreateScoreValue(SDL_Renderer *renderer)
+void recreateScoreValue(SDL_Renderer *renderer, int score)
 {
     printf("Recreating the present score.\n");
+
     destroyScoreValue();
+    calculateScoreValue(score);
     createScoreValue(renderer);
 }
 
@@ -280,13 +318,16 @@ void destroyScoreText()
     SDL_FreeSurface(scoreTextSurface);
 }
 
+
 /***********************************************/
+
 SDL_Surface *playerImg, *deadPlayerImg;
 SDL_Texture *playerTexture, *deadPlayerTexture;
 
 void createPlayerView(SDL_Renderer *renderer)
 {
     printf("Creating player view\n");
+
     playerImg = SDL_LoadBMP("../images/player_default.bmp");
     playerTexture = SDL_CreateTextureFromSurface(renderer, playerImg);
 
@@ -295,7 +336,8 @@ void createPlayerView(SDL_Renderer *renderer)
 }
 
 /**********************************************************************
-Draw a player at (x%, y%) position with respect to the game area.
+
+Drawing a player at (x%, y%) position with respect to the game area.
 
 For an example, 
 
@@ -306,6 +348,7 @@ But (75, 150) should not be the players "Starting point". (75, 150) should be pl
 
 If player's size is 40x30, we have to draw the player at ((75-20), (150-15)) point, or at (55, 135)
 */
+
 void drawPlayer(SDL_Renderer *renderer, Player* player)
 {
     int playerX = (GAME_VIEW_WIDTH * player->percentX) / 100;
@@ -325,7 +368,8 @@ void drawPlayer(SDL_Renderer *renderer, Player* player)
     {
         SDL_RenderCopy(renderer, deadPlayerTexture, NULL, &playerImageBoundaries);
     }
-    else {
+    else
+    {
         SDL_RenderCopy(renderer, playerTexture, NULL, &playerImageBoundaries);
     }
 }
@@ -333,13 +377,16 @@ void drawPlayer(SDL_Renderer *renderer, Player* player)
 void destroyPlayerView()
 {
     printf("Destroying player view\n");
+
     SDL_DestroyTexture(playerTexture);
     SDL_FreeSurface(playerImg);
+
     SDL_DestroyTexture(deadPlayerTexture);
     SDL_FreeSurface(deadPlayerImg);
 }
 
 /***************************************/
+
 void drawObstacle(SDL_Renderer *renderer, Obstacle* obstacle)
 {
     int x = obstacle->positionX;
@@ -351,7 +398,8 @@ void drawObstacle(SDL_Renderer *renderer, Obstacle* obstacle)
 }
 
 /********************************************************************/
-/* Game Over */
+/* Printing Game Over */
+
 SDL_Color Red = {255, 0, 0};
 
 SDL_Rect gameOverRect = {GO_X, GO_Y, GO_WIDTH, GO_HEIGHT};
@@ -361,6 +409,7 @@ SDL_Surface *gameOverSurface;
 void createGameOver(SDL_Renderer *renderer)
 {
     printf("Game Over !!!\n");
+
     TTF_Font *sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", GAP * 3);
 
     gameOverSurface = TTF_RenderText_Solid(sans, "Game Over", Red);

@@ -14,18 +14,18 @@ void drawScoreText(SDL_Renderer *renderer);
 void drawScoreValue(SDL_Renderer *renderer);
 void drawGameOver(SDL_Renderer *renderer);
 
-/* Checks if the mouse has been clicked inside the button area */
+/* Checking if the mouse has been clicked inside the button area */
 bool isStartButtonClicked(SDL_Event mouseDownEvent);
 
-/* Recreate start button (needed everytime you want to update it's text) */
+/* Recreating start button (needed everytime you want to update it's text) */
 void recreateStartButton(SDL_Renderer *renderer, char *text);
 
-/**/
+/* Maintaining scores */
 void calculateScoreValue(int score);
-void destroyScoreValue(SDL_Renderer *renderer);
-void recreateScoreValue(SDL_Renderer *renderer);
+void destroyScoreValue();
+void recreateScoreValue(SDL_Renderer *renderer, int score);
 
-/**/
+/* Game over text */
 void createGameOver(SDL_Renderer *renderer);
 void destroyGameOver();
 
