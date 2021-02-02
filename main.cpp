@@ -82,6 +82,7 @@ int main(int argc, char *argv[])
     drawAppDescription(renderer);
     drawStartButton(renderer);
     drawScoreText(renderer);
+    drawScoreValue(renderer);
 
     /*
     Drawings will not be visible until you call this function. It means "Refresh"

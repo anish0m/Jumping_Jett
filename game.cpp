@@ -83,6 +83,8 @@ DWORD WINAPI obstacleCreatorThread(void *_renderer)
 
 DWORD WINAPI obstacleMoverThread(void *_renderer)
 {
+    SDL_Renderer *renderer = (SDL_Renderer *)_renderer;
+
     while (isGameRunning())
     {
         Sleep(10);
@@ -108,6 +110,10 @@ DWORD WINAPI obstacleMoverThread(void *_renderer)
         for (int i = 0; i < toRemove.size(); i++)
         {
             gameState.obstacles.erase(gameState.obstacles.begin() + toRemove[i]);
+            gameState.score++;
+            calculateScoreValue(gameState.score);
+            recreateScoreValue(renderer);
+            drawScoreValue(renderer);
         }
     }
     return 0;

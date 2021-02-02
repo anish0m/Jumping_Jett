@@ -63,9 +63,9 @@
 #define OBSTACLE_HEIGHT 100
 
 /* Gameover dimensions */
-#define GO_X ((GAME_VIEW_WIDTH / 2) - (GAP * 2))
-#define GO_Y (GAME_VIEW_HEIGHT / 2)
-#define GO_WIDTH (GAP * 6)
+#define GO_X (GAME_VIEW_WIDTH / 2) - (GAP * 2)
+#define GO_Y GAME_VIEW_HEIGHT / 2
+#define GO_WIDTH GAP * 6
 #define GO_HEIGHT GAP
 
 /* Score dimensions */
@@ -73,5 +73,8 @@
 #define SCORE_Y SMALL_GAP
 #define SCORE_WIDTH START_BUTTON_WIDTH
 #define SCORE_HEIGHT START_BUTTON_HEIGHT
+
+#define SCORE_VALUE_X GAP + SMALL_GAP + SCORE_WIDTH
+#define SCORE_VALUE_WIDTH 100
 
 #endif //JJGAME_DIMENSIONS_H

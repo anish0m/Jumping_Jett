@@ -4,6 +4,8 @@
 #include "view.h"
 #include "game.h"
 
+char points[11] = "0000000000";
+
 /*
 To draw anything, you have to do these
     1) Set the boundaries (x, y, w, h)
@@ -195,6 +197,10 @@ SDL_Rect scoreTextRect = {SCORE_X, SCORE_Y, SCORE_WIDTH, SCORE_HEIGHT};
 SDL_Texture *scoreTextTexture;
 SDL_Surface *scoreTextSurface;
 
+SDL_Rect scoreValueRect = {SCORE_VALUE_X, SCORE_Y, SCORE_VALUE_WIDTH, SCORE_HEIGHT};
+SDL_Texture *scoreValueTexture;
+SDL_Surface *scoreValueSurface;
+
 void createScoreText(SDL_Renderer *renderer)
 {
     printf("Loading font and creating Score\n");
@@ -209,6 +215,61 @@ void createScoreText(SDL_Renderer *renderer)
 void drawScoreText(SDL_Renderer *renderer)
 {
     SDL_RenderCopy(renderer, scoreTextTexture, NULL, &scoreTextRect);
+}
+
+void calculateScoreValue(int score)
+{
+    printf("Calculating Score\n");
+
+    int index = 9;
+    int rem;
+
+    char temp;
+
+    while(score)
+    {
+        rem = (score % 10);
+        temp = rem + '0';
+
+        points[index] = temp;
+
+
+        score /= 10;
+        index--;
+    }
+
+    points[10] = '\0';
+}
+
+void createScoreValue(SDL_Renderer *renderer)
+{
+    printf("Creating Present Score\n");
+    TTF_Font *sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", SCORE_HEIGHT);
+
+    scoreValueSurface = TTF_RenderText_Solid(sans, points, white);
+    scoreValueTexture = SDL_CreateTextureFromSurface(renderer, scoreValueSurface);
+
+    TTF_CloseFont(sans);
+}
+
+void drawScoreValue(SDL_Renderer *renderer)
+{
+    SDL_RenderCopy(renderer, scoreValueTexture, NULL, &scoreValueRect);
+}
+
+void destroyScoreValue()
+{
+    printf("Destroying present score.\n");
+
+    SDL_DestroyTexture(scoreValueTexture);
+    SDL_FreeSurface(scoreValueSurface);
+}
+
+void recreateScoreValue(SDL_Renderer *renderer)
+{
+    printf("Recreating the present score.\n");
+    destroyScoreValue();
+    createScoreValue(renderer);
 }
 
 void destroyScoreText()
@@ -329,6 +390,7 @@ void createAllViews(SDL_Renderer *renderer)
     createAppDescription(renderer);
     createStartButton(renderer, "START");
     createScoreText(renderer);
+    createScoreValue(renderer);
     createPlayerView(renderer);
 }
 
@@ -339,5 +401,6 @@ void destroyAllViews()
     destroyAppDescription();
     destroyStartButton();
     destroyScoreText();
+    destroyScoreValue();
     destroyPlayerView();
 }
