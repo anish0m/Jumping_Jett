@@ -63,8 +63,8 @@
 #define OBSTACLE_HEIGHT 100
 
 /* Gameover dimensions */
-#define GO_X ((GAME_VIEW_WIDTH / 2) - (GAP * 1.5))
-#define GO_Y ((GAME_VIEW_HEIGHT / 2) - (GAP / 2))
+#define GO_X ((GAME_VIEW_WIDTH / 2) - (GAP * 2))
+#define GO_Y (GAME_VIEW_HEIGHT / 2)
 #define GO_WIDTH (GAP * 6)
 #define GO_HEIGHT GAP
 

@@ -135,15 +135,15 @@ DWORD WINAPI viewUpdaterThread(void *_renderer)
 
         if (gameState.player->isDead)
         {
-            createGameOver(renderer);
-            drawGameOver(renderer);
-
             recreateStartButton(renderer, (char *)"START");
             drawStartButton(renderer);
 
             drawBackgroundImage(renderer);
             drawAllObstacles(renderer);
             drawPlayer(renderer, gameState.player);
+
+            createGameOver(renderer);
+            drawGameOver(renderer);
 
             SDL_RenderPresent(renderer);
 
