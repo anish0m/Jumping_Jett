@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
     drawAppDescription(renderer);
     drawStartButton(renderer);
     drawScoreText(renderer);
-    drawScoreValue(renderer);
+    drawInitialScore(renderer);
 
     SDL_RenderPresent(renderer);
 
@@ -130,6 +130,9 @@ int main(int argc, char *argv[])
                 else
                 {
                     startGame();
+
+                    createInitialScore(renderer);
+                    drawInitialScore(renderer);
 
                     // Creating all the 4 threads
                     jettThreadHandle = CreateThread(

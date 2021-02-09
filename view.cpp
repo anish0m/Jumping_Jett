@@ -265,6 +265,34 @@ void calculateScoreValue(int score)
     points[10] = '\0';
 }
 
+void createInitialScore(SDL_Renderer *renderer)
+{
+    printf("Creating Initial Score\n");
+
+    TTF_Font *sans = TTF_OpenFont("../fonts/OpenSans-Regular.ttf", SCORE_HEIGHT);
+
+    scoreValueSurface = TTF_RenderText_Solid(sans, "0000000000", white);
+    scoreValueTexture = SDL_CreateTextureFromSurface(renderer, scoreValueSurface);
+
+    TTF_CloseFont(sans);
+}
+
+void drawInitialScore(SDL_Renderer *renderer)
+{
+    printf("Initial score is : %s\n", points);
+
+    SDL_SetRenderDrawColor(renderer, 35, 43, 43, 0xFF);
+    SDL_RenderFillRect(renderer, &scoreValueRect);
+
+    /*
+            The above two lines are not to draw the score.
+            It'll generate a Pale black rectangle with the same coordinates as scoreValueRect
+            It avoids the overwriting of scores
+     */
+
+    SDL_RenderCopy(renderer, scoreValueTexture, NULL, &scoreValueRect);
+}
+
 void createScoreValue(SDL_Renderer *renderer)
 {
     printf("Creating Present Score\n");

@@ -10,6 +10,7 @@ void drawBackgroundImage(SDL_Renderer *renderer);
 void drawJettPoster(SDL_Renderer *renderer);
 void drawAppDescription(SDL_Renderer *renderer);
 void drawStartButton(SDL_Renderer *renderer);
+void drawInitialScore(SDL_Renderer *renderer);
 void drawScoreText(SDL_Renderer *renderer);
 void drawScoreValue(SDL_Renderer *renderer);
 void drawGameOver(SDL_Renderer *renderer);
@@ -21,6 +22,7 @@ bool isStartButtonClicked(SDL_Event mouseDownEvent);
 void recreateStartButton(SDL_Renderer *renderer, char *text);
 
 /* Maintaining scores */
+void createInitialScore(SDL_Renderer *renderer);
 void calculateScoreValue(int score);
 void destroyScoreValue();
 void recreateScoreValue(SDL_Renderer *renderer, int score);
