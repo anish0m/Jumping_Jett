@@ -3,6 +3,7 @@
 
 #include "dimensions.h"
 #include "obstacle.h"
+#include "orb.h"
 
 class Player
 {
@@ -93,6 +94,44 @@ public:
             // Checking if player's head has touched the obstacle's bottom surface
             int playerHeadY = (this->percentY * GAME_VIEW_HEIGHT / 100) - (PLAYER_HEIGHT / 2);
             return playerHeadY + tolerance < OBSTACLE_HEIGHT;
+        }
+    }
+
+    bool hasCollisionWithOrb(Orb *orb)
+    {
+        int tolerance = 5;
+        int playerX = (this->percentX * GAME_VIEW_WIDTH / 100) + GAME_VIEW_X - (PLAYER_WIDTH/2);
+
+        if (orb->orbX + ORB_SIDE - tolerance < playerX)
+        {
+            return false;
+        }
+
+        if (playerX + PLAYER_WIDTH - tolerance < orb->orbX)
+        {
+            return false;
+        }
+
+        int playerLegY = (this->percentY * GAME_VIEW_HEIGHT / 100) + (PLAYER_HEIGHT / 2);
+
+        if (playerLegY - tolerance > GAME_VIEW_HEIGHT - ORB_SIDE)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+        int playerHeadY = (this->percentY * GAME_VIEW_HEIGHT / 100) - (PLAYER_HEIGHT / 2);
+
+        if (playerHeadY + tolerance < ORB_SIDE)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 };

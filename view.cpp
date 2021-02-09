@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include "variable.h"
 #include "view.h"
 #include "game.h"
 
@@ -423,6 +424,67 @@ void drawObstacle(SDL_Renderer *renderer, Obstacle* obstacle)
     SDL_Rect obstacleRect = {x, y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT};
     SDL_SetRenderDrawColor(renderer, obstacle->colorR, obstacle->colorG, obstacle->colorB, 0xFF);
     SDL_RenderFillRect(renderer, &obstacleRect);
+}
+
+/***************************************/
+/* Orb drawing */
+
+SDL_Surface *orbImg;
+SDL_Texture *orbTexture;
+
+void createOrb(SDL_Renderer *renderer)
+{
+    if (choose >= 5)
+    {
+        choose -= 5;
+    }
+
+    printf("Creating orbs.\n");
+
+    if (choose == 0)
+    {
+        orbImg = SDL_LoadBMP("../images/speedOrb.bmp");
+    }
+    else if (choose == 1)
+    {
+        orbImg = SDL_LoadBMP("../images/slowOrb.bmp");
+    }
+    else if (choose == 2)
+    {
+        orbImg = SDL_LoadBMP("../images/gunOrb.bmp");
+    }
+    else if (choose == 3)
+    {
+        orbImg = SDL_LoadBMP("../images/bonusOrb.bmp");
+    }
+    else
+    {
+        orbImg = SDL_LoadBMP("../images/deathOrb.bmp");
+    }
+
+    orbTexture = SDL_CreateTextureFromSurface(renderer, orbImg);
+}
+
+void drawOrb(SDL_Renderer *renderer, Orb* orb)
+{
+    int X = orb->orbX;
+    int Y = orb->orbY;
+
+    SDL_Rect orbBoundaries = {
+            X,
+            Y,
+            ORB_SIDE,
+            ORB_SIDE};
+
+    SDL_RenderCopy(renderer, orbTexture, NULL, &orbBoundaries);
+}
+
+void destroyOrb()
+{
+    printf("Destroying orb.\n");
+
+    SDL_DestroyTexture(orbTexture);
+    SDL_FreeSurface(orbImg);
 }
 
 /********************************************************************/

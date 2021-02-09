@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
+#include <windows.h>
 #include <SDL.h>
 #include "game.h"
-#include <windows.h>
+#include "variable.h"
 
 struct GameState gameState;
 
@@ -10,7 +11,6 @@ void initGame()
     printf("Resetting Game State\n");
 
     gameState = {
-        false,
         false,
         false,
         0,
@@ -23,6 +23,15 @@ void drawAllObstacles(SDL_Renderer *renderer)
     {
         Obstacle *obstacle = gameState.obstacles[i];
         drawObstacle(renderer, obstacle);
+    }
+}
+
+void drawAllOrbs(SDL_Renderer *renderer)
+{
+    for (int i = 0; i < gameState.orbs.size(); i++)
+    {
+        Orb *orb = gameState.orbs[i];
+        drawOrb(renderer, orb);
     }
 }
 
@@ -58,6 +67,17 @@ DWORD WINAPI jettThread(void *_renderer)
             {
                 player->isDead = true;
                 break;
+            }
+        }
+
+        // Check if jett has collided with any orb
+        if (gameState.orbs.size() > 0)
+        {
+            Orb *orb = gameState.orbs[0];
+
+            if (player->hasCollisionWithOrb(orb))
+            {
+                effectOfOrb();
             }
         }
     }
@@ -116,6 +136,57 @@ DWORD WINAPI obstacleMoverThread(void *_renderer)
 
             recreateScoreValue(renderer, gameState.score);
             drawScoreValue(renderer);
+        }
+    }
+    return 0;
+}
+
+DWORD WINAPI orbCreatorThread(void *_renderer)
+{
+    while (isGameRunning())
+    {
+        Sleep(3000);
+
+        if (gameState.orb.size() < 2)
+        {
+            printf("Creating orb\n");
+            generateOrb();
+        }
+    }
+    return 0;
+}
+
+DWORD WINAPI orbMoverThread(void *_renderer)
+{
+    SDL_Renderer *renderer = (SDL_Renderer *)_renderer;
+
+    while (isGameRunning())
+    {
+        Sleep(10);
+
+        vector<int> orbRemove;
+
+        if (gameState.player->isDead)
+        {
+            break;
+        }
+
+        // Move all the orbs left by 1 pixel
+        for (int i = 0; i < gameState.orb.size(); i++)
+        {
+            Orb *orb = gameState.orbs[i];
+            orb->moveOrbLeft();
+
+            if (orb->orbReachedLeft())
+            {
+                orbRemove.push_back(i);
+            }
+        }
+
+        // Remove the orbs that has reached the leftmost corner
+        for (int i = 0; i < orbRemove.size(); i++)
+        {
+            gameState.orbs.erase(gameState.orbs.begin() + orbRemove[i]);
         }
     }
     return 0;
@@ -207,4 +278,48 @@ void generateObstacle()
 {
     Obstacle *obstacle = new Obstacle();
     gameState.obstacles.push_back(obstacle);
+}
+
+void generateOrb()
+{
+    Orb *orb = new Orb();
+    gameState.orbs.push_back(orb);
+}
+
+void effectOfOrb()
+{
+    if (choose >= 5)
+    {
+        choose -= 5;
+    }
+
+    Player *player = getPlayer();
+    SDL_Renderer *renderer;
+
+    if (choose == 0)
+    {
+        //increase speed of obstacle for 10 sec
+    }
+    else if (choose == 1)
+    {
+        //decrease speed of obstacle for 10 sec
+    }
+    else if (choose == 2)
+    {
+        //give jett a gun
+        //click on an obstacle
+        //remove that obstacle
+    }
+    else if (choose == 3)
+    {
+        gameState.score += 100;
+
+        recreateScoreValue(renderer, gameState.score);
+        drawScoreValue(renderer);
+    }
+    else
+    {
+        player->isDead = true;
+        break;
+    }
 }

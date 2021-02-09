@@ -38,5 +38,6 @@ void destroyAllViews();
 /* Functions to draw game things */
 void drawPlayer(SDL_Renderer *renderer, Player* player);
 void drawObstacle(SDL_Renderer *renderer, Obstacle* obstacle);
+void drawOrb(SDL_Renderer *renderer, Orb* orb);
 
 #endif //JJGAME_VIEW_H

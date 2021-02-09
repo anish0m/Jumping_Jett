@@ -56,8 +56,8 @@ int main(int argc, char *argv[])
     4 IDs and 4 handles bellow, for each of the above mentioned thread.
     */
 
-    DWORD jettThreadId, obstacleCreatorThreadId, obstacleMoverThreadId, viewUpdaterThreadId;
-    HANDLE jettThreadHandle, obstacleCreatorThreadHandle, obstacleMoverThreadHandle, viewUpdaterThreadHandle;
+    DWORD jettThreadId, obstacleCreatorThreadId, obstacleMoverThreadId, orbCreatorThreadId, orbMoverThreadId, viewUpdaterThreadId;
+    HANDLE jettThreadHandle, obstacleCreatorThreadHandle, obstacleMoverThreadHandle, orbCreatorThreadHandle, orbMoverThreadHandle, viewUpdaterThreadHandle;
 
     //Initializing default state of the game.
     initGame();
@@ -118,6 +118,8 @@ int main(int argc, char *argv[])
                     TerminateThread(jettThreadHandle, 0);
                     TerminateThread(obstacleCreatorThreadHandle, 0);
                     TerminateThread(obstacleMoverThreadHandle, 0);
+                    TerminateThread(orbCreatorThreadHandle, 0);
+                    TerminateThread(orbMoverThreadHandle, 0);
                     TerminateThread(viewUpdaterThreadHandle, 0);
 
                     // Updating game state variables
@@ -159,6 +161,22 @@ int main(int argc, char *argv[])
                         0,
                         &obstacleMoverThreadId);
 
+                    orbCreatorThreadHandle = CreateThread(
+                            0,
+                            0,
+                            orbCreatorThread,
+                            renderer,
+                            0,
+                            &orbCreatorThreadId);
+
+                    orbMoverThreadHandle = CreateThread(
+                            0,
+                            0,
+                            orbMoverThread,
+                            renderer,
+                            0,
+                            &orbMoverThreadId);
+
                     viewUpdaterThreadHandle = CreateThread(
                         0,
                         0,
@@ -199,6 +217,8 @@ int main(int argc, char *argv[])
     CloseHandle(jettThreadHandle);
     CloseHandle(obstacleCreatorThreadHandle);
     CloseHandle(obstacleMoverThreadHandle);
+    CloseHandle(orbCreatorHandle)
+    CloseHandle(orbMoverHandle);
     CloseHandle(viewUpdaterThreadHandle);
 
     // Destroying all the view-related elements

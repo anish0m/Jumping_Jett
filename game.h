@@ -7,6 +7,8 @@
 #include "dimensions.h"
 #include "obstacle.h"
 #include "player.h"
+#include "orb.h"
+
 using namespace std;
 
 /*
@@ -19,18 +21,20 @@ struct GameState
 {
     bool hasStarted;
     bool hasFinished;
-    bool isPaused;
 
     int score;
 
     Player *player;
-    vector<Obstacle *> obstacles;
+    vector <Obstacle *> obstacles;
+    vector <Orb *> orbs;
 };
 
 /* Functions that run only inside a thread */
 DWORD WINAPI jettThread(void *_renderer);
 DWORD WINAPI obstacleCreatorThread(void *_renderer);
 DWORD WINAPI obstacleMoverThread(void *_renderer);
+DWORD WINAPI orbCreatorThread(void *_renderer);
+DWORD WINAPI orbMoverThread(void *_renderer);
 DWORD WINAPI viewUpdaterThread(void *_renderer);
 
 void initGame();
@@ -45,5 +49,8 @@ bool hasGameStarted();
 Player *getPlayer();
 
 void generateObstacle();
+void generateOrb();
+
+void effectOfOrb();
 
 #endif //JJGAME_GAME_H

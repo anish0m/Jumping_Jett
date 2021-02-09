@@ -69,6 +69,9 @@
 #define OBSTACLE_WIDTH 30
 #define OBSTACLE_HEIGHT 100
 
+/* Orb Dimension */
+#define ORB_SIDE 20
+
 
 /* Gameover dimensions */
 #define GO_X (GAME_VIEW_WIDTH / 2) - (GAP * 2)

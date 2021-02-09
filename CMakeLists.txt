@@ -18,6 +18,6 @@ link_directories(
         ${SDL2_TTF_LIB_DIR}
 )
 
-add_executable(JJgame main.cpp view.h view.cpp game.h game.cpp dimensions.h obstacle.h player.h)
+add_executable(JJgame main.cpp view.h view.cpp game.h game.cpp dimensions.h obstacle.h player.h orb.h variable.h)
 
 target_link_libraries(${PROJECT_NAME} SDL2main SDL2 SDL2_ttf)
